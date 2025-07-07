@@ -1,36 +1,236 @@
-# Welcome to your CDK C# project!
+# 🎓 AWS CDK 學習專案 - YARP 反向代理
 
-This is a blank project for CDK development with C#.
+## 專案目標
+通過建立 YARP 反向代理專案，循序漸進地學習 AWS CDK 和核心 AWS 服務
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## 📋 學習規則
+- ✅ 一次只學習一個概念
+- ✅ 每個步驟都有明確的學習目標
+- ✅ 每個步驟完成後進行驗證
+- ✅ 不跳過任何重要概念
 
-It uses the [.NET CLI](https://docs.microsoft.com/dotnet/articles/core/) to compile and execute your project.
+## 🚀 學習計劃 (預計 10-12 週)
 
-## Useful commands
+### 階段一：CDK 基礎 (1-2 週)
+**學習目標**：掌握 CDK 基本概念和操作
 
-* `dotnet build src` compile this app
-* `cdk deploy`       deploy this stack to your default AWS account/region
-* `cdk diff`         compare deployed stack with current state
-* `cdk synth`        emits the synthesized CloudFormation template
+#### 步驟 1: 驗證 CDK 環境
+- [x] 確認 CDK 版本 (2.1020.2)
+- [x] 確認 AWS CLI 配置
+- [x] 設定預設 region (ap-northeast-2)
+- [x] 更新學習計劃到 README.md
+- [ ] Git commit 學習進度
+- [ ] 理解 CDK 專案結構
+- [ ] 學習 CDK 基本指令
 
-# 🛠️ AWS 練習專案 - TODO List
+#### 步驟 2: 建立第一個簡單的 VPC
+- [x] 學習 VPC 的基本概念
+- [x] 用 CDK 建立最簡單的 VPC
+- [ ] 驗證部署結果
+- [ ] 理解 CloudFormation 輸出
 
-## 一、基礎設計
+#### 步驟 3: 理解 CDK 的 Infrastructure as Code
+- [ ] 學習 CDK 與 CloudFormation 的關係
+- [ ] 理解 Stack 和 Construct 概念
+- [ ] 練習修改和重新部署
 
-- [ ] 規劃 VPC 三層結構（public / app / db）
-- [ ] 設定 Route Table、NAT Gateway、Internet Gateway
-- [ ] 建立 IAM 角色與權限（ECS, S3, CloudWatch）
+### 階段二：網路基礎 (2-3 週)
+**學習目標**：掌握 AWS 網路服務
 
-## 二、AWS 架構建設（建議使用 AWS CDK）
+#### 步驟 4: 建立 Subnet 和 Route Table
+- [x] 學習 Public/Private Subnet 概念
+- [x] 實作三層網路架構
+- [ ] 理解路由表的配置
+- [ ] 測試子網路連通性
 
-- [ ] 初始化 CDK 專案（建議使用 C# / TypeScript）
-- [ ] 建立 VPC 結構
-    - [ ] public / app / db subnet
-    - [ ] 子網路的 Route Table 與路由規則
-- [ ] 建立 IAM Role
-    - [ ] ECS Task Role（存取 S3）
-    - [ ] ECS Execution Role（啟動 Task 用）
-- [ ] 建立 ECS Cluster（Fargate 模式）
-- [ ] 建立 Application Load Balancer（ALB）與 Target Group
-- [ ] 建立 S3 Bucket（存放 domain 對應表）
-- [ ] 撰寫 CDK 程式碼並納入 Git 版控
+#### 步驟 5: 網路閘道優化
+- [x] 學習 Internet Gateway 概念
+- [x] 理解 NAT Gateway 作用
+- [ ] 移除 NAT Gateway 進行成本優化
+- [ ] 設定 VPC Endpoints
+
+#### 步驟 6: 實作 Security Groups
+- [ ] 學習防火牆規則
+- [ ] 設定安全群組
+- [ ] 理解最小權限原則
+- [ ] 測試安全群組規則
+
+### 階段三：運算服務 (2-3 週)
+**學習目標**：掌握容器化服務
+
+#### 步驟 7: 建立 ECS Cluster
+- [ ] 學習容器編排概念
+- [ ] 建立 ECS Cluster (Fargate 模式)
+- [ ] 理解 Fargate vs EC2 模式
+- [ ] 學習 Fargate Spot 成本優化
+
+#### 步驟 8: 建立第一個 ECS Service
+- [ ] 學習 Task Definition 概念
+- [ ] 部署簡單的 Hello World 容器
+- [ ] 驗證容器運行狀態
+- [ ] 理解 ECS Service 概念
+
+#### 步驟 9: IAM 權限設定
+- [ ] 建立 ECS Task Role
+- [ ] 建立 ECS Execution Role
+- [ ] 理解最小權限原則
+- [ ] 測試權限設定
+
+### 階段四：負載平衡器 (1-2 週)
+**學習目標**：掌握流量分配
+
+#### 步驟 10: 建立 Application Load Balancer
+- [ ] 學習負載平衡器概念
+- [ ] 配置 ALB 和 Target Group
+- [ ] 設定健康檢查
+- [ ] 測試負載平衡功能
+
+#### 步驟 11: 網路整合測試
+- [ ] 測試 ALB → ECS 連通性
+- [ ] 驗證安全群組規則
+- [ ] 測試故障轉移
+- [ ] 理解網路流量路徑
+
+### 階段五：YARP 應用 (2-3 週)
+**學習目標**：實作具體應用
+
+#### 步驟 12: 建立 YARP 專案
+- [ ] 學習 YARP 基本概念
+- [ ] 建立簡單的反向代理
+- [ ] 學習 Docker 容器化
+- [ ] 推送映像到 ECR
+
+#### 步驟 13: S3 整合
+- [ ] 學習 S3 基本操作
+- [ ] 建立 S3 Bucket
+- [ ] 實作 domain mapping 功能
+- [ ] 測試動態配置更新
+
+#### 步驟 14: ServiceB 後端服務
+- [ ] 建立簡單的後端服務
+- [ ] 配置 YARP 路由規則
+- [ ] 測試端到端流量
+- [ ] 驗證 header 注入功能
+
+### 階段六：監控和維護 (1-2 週)
+**學習目標**：掌握運維技能
+
+#### 步驟 15: 設定 CloudWatch
+- [ ] 學習監控概念
+- [ ] 配置日誌群組
+- [ ] 設定自定義指標
+- [ ] 建立 CloudWatch Dashboard
+
+#### 步驟 16: 成本最佳化
+- [ ] 設定成本警示
+- [ ] 分析成本分布
+- [ ] 實施自動擴展
+- [ ] 驗證成本節省效果
+
+## 🛠️ 常用 CDK 指令
+
+```bash
+# 編譯專案
+dotnet build src
+
+# 查看變更
+cdk diff
+
+# 部署到 AWS
+cdk deploy
+
+# 生成 CloudFormation 模板
+cdk synth
+
+# 清理資源
+cdk destroy
+```
+
+## 📊 成本預估
+
+```
+目標架構成本 (月費用)：
+- ECS Fargate Spot: $15-25
+- Application Load Balancer: $16
+- S3 (domain mapping): $0-1
+- CloudWatch Logs: $0-2
+- 總計: $31-44/月
+```
+
+## 🎯 當前進度
+
+**階段一：CDK 基礎**
+- [x] 步驟 1: 環境驗證 ✅
+- [ ] 步驟 2: 第一個 VPC (進行中)
+- [ ] 步驟 3: Infrastructure as Code 概念
+
+**目前狀態**: 
+- ✅ CDK 版本確認 (2.1020.2)
+- ✅ AWS CLI 配置完成
+- ✅ Region 設定為 ap-northeast-2 (首爾)
+- 🔄 準備部署 VPC 到 AWS
+
+**下一個里程碑**: 完成 VPC 部署並理解 CDK 基本概念
+
+## 📍 Region 重要說明
+
+**ap-northeast-2 (首爾) 的優勢**:
+- 低延遲 (適合亞洲地區)
+- 完整的 AWS 服務支援
+- 相對較低的成本
+
+**成本預估調整 (ap-northeast-2)**:
+```
+目標架構成本 (月費用，首爾地區)：
+- ECS Fargate Spot: $16-28
+- Application Load Balancer: $18
+- S3 (domain mapping): $0-1
+- CloudWatch Logs: $0-2
+- 總計: $34-49/月
+```
+
+## 🚀 下一步操作指南
+
+**您需要執行的步驟**:
+
+1. **編譯專案**:
+   ```bash
+   cd src
+   dotnet build
+   ```
+
+2. **查看將要部署的資源**:
+   ```bash
+   cdk synth
+   ```
+   📝 **學習重點**: 理解 CloudFormation 模板的結構
+
+3. **查看變更差異**:
+   ```bash
+   cdk diff
+   ```
+   📝 **學習重點**: 了解 CDK 如何追蹤基礎設施變更
+
+4. **部署到 AWS**:
+   ```bash
+   cdk deploy
+   ```
+   📝 **學習重點**: 觀察部署過程和資源建立順序
+
+5. **驗證部署結果**:
+   - 登入 AWS Console
+   - 查看 VPC 服務頁面
+   - 確認資源已正確建立
+
+**⚠️ 重要提醒**:
+- 部署前請確保您有適當的 AWS 權限
+- 首次部署可能需要 5-10 分鐘
+- 記錄每個步驟的觀察結果
+
+---
+
+## 📚 學習資源
+
+- [AWS CDK Developer Guide](https://docs.aws.amazon.com/cdk/v2/guide/)
+- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
+- [YARP Documentation](https://microsoft.github.io/reverse-proxy/)
