@@ -19,14 +19,19 @@
 - [x] 確認 AWS CLI 配置
 - [x] 設定預設 region (ap-northeast-2)
 - [x] 更新學習計劃到 README.md
-- [ ] Git commit 學習進度
+- [x] Git commit 學習進度 ✅ (commit: 9f0da17)
 - [ ] 理解 CDK 專案結構
 - [ ] 學習 CDK 基本指令
 
 #### 步驟 2: 建立第一個簡單的 VPC
 - [x] 學習 VPC 的基本概念
 - [x] 用 CDK 建立最簡單的 VPC
-- [ ] 驗證部署結果
+- [x] 階段 2A: 理解專案結構 ✅
+- [x] 階段 2B-1: 編譯專案成功 ✅
+- [ ] 階段 2B-2: 生成 CloudFormation 模板 (cdk synth)
+- [ ] 階段 2B-3: 查看變更 (cdk diff)
+- [ ] 階段 2B-4: 部署到 AWS (cdk deploy)
+- [ ] 階段 2C: 驗證部署結果
 - [ ] 理解 CloudFormation 輸出
 
 #### 步驟 3: 理解 CDK 的 Infrastructure as Code
@@ -168,9 +173,21 @@ cdk destroy
 - ✅ CDK 版本確認 (2.1020.2)
 - ✅ AWS CLI 配置完成
 - ✅ Region 設定為 ap-northeast-2 (首爾)
-- 🔄 準備部署 VPC 到 AWS
+- ✅ 學習計劃建立並提交到 Git (commit: 9f0da17)
+- ✅ 專案編譯成功 (階段 2B-1)
+- 🔄 下一步：生成 CloudFormation 模板
 
 **下一個里程碑**: 完成 VPC 部署並理解 CDK 基本概念
+
+## 🎉 恭喜！步驟 1 完全完成
+
+您已經成功：
+- ✅ 設定開發環境
+- ✅ 配置 AWS CLI
+- ✅ 建立學習計劃
+- ✅ 學會基本的 Git 操作
+
+**準備進入步驟 2**: 現在可以開始理解和部署您的第一個 VPC！
 
 ## 📍 Region 重要說明
 
@@ -189,43 +206,72 @@ cdk destroy
 - 總計: $34-49/月
 ```
 
-## 🚀 下一步操作指南
+## 🚀 下一步操作指南 - 步驟 2: VPC 部署
 
-**您需要執行的步驟**:
+**階段 2A: 理解 CDK 專案結構**
 
-1. **編譯專案**:
+首先，讓我們了解您的專案結構：
+```
+AwsCdkStack/
+├── src/AwsCdkStack/
+│   ├── Program.cs           ← CDK 應用程式進入點
+│   ├── AwsCdkStackStack.cs  ← 您的 VPC 程式碼在這裡
+│   └── AwsCdkStack.csproj   ← 專案相依性
+├── cdk.json                 ← CDK 配置檔
+└── README.md               ← 學習進度追蹤
+```
+
+**階段 2B: CDK 基本指令實作**
+
+1. **編譯專案** (確保程式碼正確):
    ```bash
    cd src
    dotnet build
    ```
+   📝 **學習重點**: C# 編譯過程，檢查語法錯誤
 
-2. **查看將要部署的資源**:
+2. **🔄 生成 CloudFormation 模板** (理解 Infrastructure as Code) - **下一步**:
    ```bash
    cdk synth
    ```
-   📝 **學習重點**: 理解 CloudFormation 模板的結構
+   📝 **學習重點**: CDK 如何轉換為 CloudFormation JSON/YAML
+   💡 **觀察要點**: 
+   - 輸出的 JSON/YAML 結構
+   - VPC 相關的資源定義
+   - CDK 自動生成的資源名稱
 
-3. **查看變更差異**:
+3. **查看將要建立的資源** (部署前檢查):
    ```bash
    cdk diff
    ```
-   📝 **學習重點**: 了解 CDK 如何追蹤基礎設施變更
+   📝 **學習重點**: 基礎設施變更追蹤和版本控制
 
-4. **部署到 AWS**:
+4. **部署到 AWS** (實際建立資源):
    ```bash
    cdk deploy
    ```
-   📝 **學習重點**: 觀察部署過程和資源建立順序
+   📝 **學習重點**: CloudFormation Stack 建立過程
 
-5. **驗證部署結果**:
-   - 登入 AWS Console
-   - 查看 VPC 服務頁面
-   - 確認資源已正確建立
+**階段 2C: 驗證和學習**
 
-**⚠️ 重要提醒**:
-- 部署前請確保您有適當的 AWS 權限
-- 首次部署可能需要 5-10 分鐘
-- 記錄每個步驟的觀察結果
+5. **AWS Console 驗證**:
+   - 🌐 登入 [AWS Console](https://ap-northeast-2.console.aws.amazon.com/vpc/)
+   - 📍 確認在 ap-northeast-2 region
+   - 🔍 查看 VPC 服務 → 檢查您的 VPC
+   - 📊 查看 CloudFormation → 檢查 Stack 狀態
+
+6. **記錄學習成果**:
+   - VPC ID 和 CIDR Block
+   - 建立了哪些子網路
+   - Route Table 配置
+   - 任何觀察到的有趣現象
+
+**⚠️ 重要學習提醒**:
+- 📚 每個指令執行後，觀察輸出並提問
+- 💰 注意成本：VPC 本身免費，但要留意 NAT Gateway
+- 🔒 確保有適當的 IAM 權限
+- ⏱️ 首次部署可能需要 5-10 分鐘
+- 📝 隨時在 README.md 中記錄問題和發現
 
 ---
 
