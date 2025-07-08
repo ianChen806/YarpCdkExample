@@ -31,9 +31,12 @@
 - [x] 階段 2B-2: 生成 CloudFormation 模板 (cdk synth) ✅
 - [x] 階段 2B-3: 查看變更 (cdk diff) ✅
 - [x] 階段 2B-3.1: 成本優化修改 (移除 NAT Gateway) ✅
-- [ ] 階段 2B-4: 部署到 AWS (cdk deploy) ← 當前步驟
-- [ ] 階段 2C: 驗證部署結果
-- [ ] 理解 CloudFormation 輸出
+- [x] 階段 2B-4a: CDK Bootstrap (環境初始化) ✅
+- [x] 階段 2B-4b: 部署到 AWS (cdk deploy) ✅
+- [x] 階段 2C: 驗證部署結果 ✅
+- [x] 理解 CloudFormation 輸出 ✅
+
+#### 🎉 步驟 2 完全完成！
 
 #### 步驟 3: 理解 CDK 的 Infrastructure as Code
 - [ ] 學習 CDK 與 CloudFormation 的關係
@@ -167,8 +170,8 @@ cdk destroy
 
 **階段一：CDK 基礎**
 - [x] 步驟 1: 環境驗證 ✅
-- [ ] 步驟 2: 第一個 VPC (進行中)
-- [ ] 步驟 3: Infrastructure as Code 概念
+- [x] 步驟 2: 第一個 VPC ✅
+- [ ] 步驟 3: Infrastructure as Code 概念 ← 下一步
 
 **目前狀態**: 
 - ✅ CDK 版本確認 (2.1020.2)
@@ -178,19 +181,29 @@ cdk destroy
 - ✅ 專案編譯成功 (階段 2B-1)
 - ✅ CloudFormation 模板生成成功 (階段 2B-2)
 - ✅ 變更清單檢視完成 (階段 2B-3)
-- 🔄 下一步：成本優化修改 → 部署到 AWS
+- ✅ 成本優化修改完成 (階段 2B-3.1)
+- ✅ CDK Bootstrap 完成 (階段 2B-4a)
+- ✅ 首次 CDK 部署成功 (階段 2B-4b)
+- ✅ AWS Console 驗證完成 (階段 2C)
+- 🔄 下一步：學習 Infrastructure as Code 概念
 
-**下一個里程碑**: 完成 VPC 部署並理解 CDK 基本概念
+**🎉 重要里程碑達成**: 成功部署第一個 VPC！
 
-## 🎉 恭喜！步驟 1 完全完成
+## 🎉 恭喜！步驟 2 完全完成
 
 您已經成功：
 - ✅ 設定開發環境
 - ✅ 配置 AWS CLI
 - ✅ 建立學習計劃
 - ✅ 學會基本的 Git 操作
+- ✅ 理解 CDK 專案結構
+- ✅ 掌握 CDK 基本指令
+- ✅ 完成 CDK Bootstrap
+- ✅ 部署第一個 VPC
+- ✅ 應用成本優化思維
+- ✅ 驗證 AWS 資源
 
-**準備進入步驟 2**: 現在可以開始理解和部署您的第一個 VPC！
+**準備進入步驟 3**: 現在可以深入理解 Infrastructure as Code 概念！
 
 ## 📍 Region 重要說明
 
