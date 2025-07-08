@@ -28,8 +28,8 @@
 - [x] 用 CDK 建立最簡單的 VPC
 - [x] 階段 2A: 理解專案結構 ✅
 - [x] 階段 2B-1: 編譯專案成功 ✅
-- [ ] 階段 2B-2: 生成 CloudFormation 模板 (cdk synth)
-- [ ] 階段 2B-3: 查看變更 (cdk diff)
+- [x] 階段 2B-2: 生成 CloudFormation 模板 (cdk synth) ✅
+- [ ] 階段 2B-3: 查看變更 (cdk diff) ← 當前步驟
 - [ ] 階段 2B-4: 部署到 AWS (cdk deploy)
 - [ ] 階段 2C: 驗證部署結果
 - [ ] 理解 CloudFormation 輸出
@@ -175,7 +175,8 @@ cdk destroy
 - ✅ Region 設定為 ap-northeast-2 (首爾)
 - ✅ 學習計劃建立並提交到 Git (commit: 9f0da17)
 - ✅ 專案編譯成功 (階段 2B-1)
-- 🔄 下一步：生成 CloudFormation 模板
+- ✅ CloudFormation 模板生成成功 (階段 2B-2)
+- 🔄 下一步：檢視變更清單 (cdk diff)
 
 **下一個里程碑**: 完成 VPC 部署並理解 CDK 基本概念
 
@@ -208,6 +209,21 @@ cdk destroy
 
 ## 🚀 下一步操作指南 - 步驟 2: VPC 部署
 
+**💡 環境變數疑問解答**
+
+**Q: 沒有設定 CDK_DEFAULT_ACCOUNT 和 CDK_DEFAULT_REGION 會有問題嗎？**
+**A: 不會！** 對於學習階段完全沒問題：
+
+✅ **目前階段（學習用）**：
+- `cdk synth` 會正常工作
+- `cdk deploy` 會使用您的 AWS CLI 預設設定
+- 模板會是 environment-agnostic（通用型）
+
+🔧 **將來可能需要設定的情況**：
+- 當您需要查詢特定 region 的 AZ 數量
+- 當您需要多環境部署（dev/staging/prod）
+- 當您的程式碼需要 region/account 特定的功能
+
 **階段 2A: 理解 CDK 專案結構**
 
 首先，讓我們了解您的專案結構：
@@ -231,14 +247,37 @@ AwsCdkStack/
    📝 **學習重點**: C# 編譯過程，檢查語法錯誤
 
 2. **🔄 生成 CloudFormation 模板** (理解 Infrastructure as Code) - **下一步**:
+
+   **⚠️ 重要概念：環境變數和 CDK 模式**
+   
+   您的 Program.cs 使用了環境變數：
+   ```csharp
+   Account = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
+   Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION"),
+   ```
+   
+   **如果沒有設定環境變數會怎樣？**
+   - ✅ `cdk synth` **仍然會工作**
+   - ✅ CDK 會使用 **environment-agnostic** 模式
+   - ✅ 生成的模板可以部署到任何 region/account
+   - ⚠️ 但某些功能會受限（如 AZ 查詢、AMI 查詢等）
+   
+   **cdk synth 的作用**:
    ```bash
    cdk synth
    ```
-   📝 **學習重點**: CDK 如何轉換為 CloudFormation JSON/YAML
+   📝 **這個指令做什麼**:
+   - 🔄 將您的 C# CDK 程式碼轉換成 CloudFormation JSON
+   - 🔍 驗證程式碼語法和邏輯
+   - 📄 生成 AWS 實際執行的基礎設施定義
+   - 💾 輸出到 `cdk.out/` 資料夾
+   
+   📝 **學習重點**: 理解 Infrastructure as Code 的轉換過程
    💡 **觀察要點**: 
-   - 輸出的 JSON/YAML 結構
+   - 輸出的 JSON 結構
    - VPC 相關的資源定義
    - CDK 自動生成的資源名稱
+   - 注意任何警告訊息
 
 3. **查看將要建立的資源** (部署前檢查):
    ```bash

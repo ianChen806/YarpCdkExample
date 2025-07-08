@@ -1,13 +1,40 @@
 using Amazon.CDK;
+using Amazon.CDK.AWS.EC2;
 using Constructs;
 
 namespace AwsCdkStack
 {
     public class AwsCdkStackStack : Stack
     {
-        internal AwsCdkStackStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+        internal AwsCdkStackStack(Construct scope, string id, IStackProps props = null)
+            : base(scope, id, props)
         {
-            // The code that defines your stack goes here
+            var vpc = new Vpc(this, "MyVpc", new VpcProps
+            {
+                MaxAzs = 2,
+                Cidr = "10.16.0.0/16",
+                SubnetConfiguration = new ISubnetConfiguration[]
+                {
+                    new SubnetConfiguration
+                    {
+                        Name = "Public",
+                        SubnetType = SubnetType.PUBLIC,
+                        CidrMask = 20,
+                    },
+                    new SubnetConfiguration
+                    {
+                        Name = "App",
+                        SubnetType = SubnetType.PRIVATE_WITH_EGRESS,
+                        CidrMask = 20
+                    },
+                    new SubnetConfiguration
+                    {
+                        Name = "Database",
+                        SubnetType = SubnetType.PRIVATE_ISOLATED,
+                        CidrMask = 20
+                    }
+                }
+            });
         }
     }
 }
