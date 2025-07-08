@@ -12,7 +12,7 @@ namespace AwsCdkStack
             var vpc = new Vpc(this, "MyVpc", new VpcProps
             {
                 MaxAzs = 2,
-                Cidr = "10.16.0.0/16",
+                IpAddresses = IpAddresses.Cidr("10.16.0.0/16"),
                 SubnetConfiguration = new ISubnetConfiguration[]
                 {
                     new SubnetConfiguration
