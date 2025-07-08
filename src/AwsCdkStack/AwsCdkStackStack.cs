@@ -24,7 +24,7 @@ namespace AwsCdkStack
                     new SubnetConfiguration
                     {
                         Name = "App",
-                        SubnetType = SubnetType.PRIVATE_WITH_EGRESS,
+                        SubnetType = SubnetType.PRIVATE_ISOLATED,
                         CidrMask = 20
                     },
                     new SubnetConfiguration

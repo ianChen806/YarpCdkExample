@@ -29,8 +29,9 @@
 - [x] 階段 2A: 理解專案結構 ✅
 - [x] 階段 2B-1: 編譯專案成功 ✅
 - [x] 階段 2B-2: 生成 CloudFormation 模板 (cdk synth) ✅
-- [ ] 階段 2B-3: 查看變更 (cdk diff) ← 當前步驟
-- [ ] 階段 2B-4: 部署到 AWS (cdk deploy)
+- [x] 階段 2B-3: 查看變更 (cdk diff) ✅
+- [x] 階段 2B-3.1: 成本優化修改 (移除 NAT Gateway) ✅
+- [ ] 階段 2B-4: 部署到 AWS (cdk deploy) ← 當前步驟
 - [ ] 階段 2C: 驗證部署結果
 - [ ] 理解 CloudFormation 輸出
 
@@ -176,7 +177,8 @@ cdk destroy
 - ✅ 學習計劃建立並提交到 Git (commit: 9f0da17)
 - ✅ 專案編譯成功 (階段 2B-1)
 - ✅ CloudFormation 模板生成成功 (階段 2B-2)
-- 🔄 下一步：檢視變更清單 (cdk diff)
+- ✅ 變更清單檢視完成 (階段 2B-3)
+- 🔄 下一步：成本優化修改 → 部署到 AWS
 
 **下一個里程碑**: 完成 VPC 部署並理解 CDK 基本概念
 
