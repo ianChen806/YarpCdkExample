@@ -39,17 +39,28 @@
 #### 🎉 步驟 2 完全完成！
 
 #### 步驟 3: 理解 CDK 的 Infrastructure as Code
-- [ ] 學習 CDK 與 CloudFormation 的關係
-- [ ] 理解 Stack 和 Construct 概念
-- [ ] 練習修改和重新部署
+- [x] 學習 CDK 與 CloudFormation 的關係 ✅
+- [x] 理解 Stack 和 Construct 概念 ✅
+- [x] 練習修改和重新部署 ✅
+- [x] 體驗 Infrastructure as Code 的威力 ✅
+- [x] 理解成本影響分析 ✅
+
+**🎉 步驟 3 完全完成！** 
+
+**重要學習成果**：
+- ✅ 一行程式碼修改觸發複雜基礎設施變化
+- ✅ CDK 智慧推論：PRIVATE_WITH_EGRESS → NAT Gateway + EIP
+- ✅ 成本意識：NAT Gateway 月費 ~$75，選擇成本優化
+- ✅ 最佳實務：自動跨 AZ 部署確保高可用性
+- ✅ 學習策略：在學習階段控制成本，保持 PRIVATE_ISOLATED
 
 ### 階段二：網路基礎 (2-3 週)
 **學習目標**：掌握 AWS 網路服務
 
 #### 步驟 4: 建立 Subnet 和 Route Table
-- [x] 學習 Public/Private Subnet 概念
-- [x] 實作三層網路架構
-- [ ] 理解路由表的配置
+- [x] 學習 Public/Private Subnet 概念 ✅
+- [x] 實作三層網路架構 ✅
+- [ ] 理解路由表的配置 ← 下一步
 - [ ] 測試子網路連通性
 
 #### 步驟 5: 網路閘道優化
@@ -168,32 +179,37 @@ cdk destroy
 
 ## 🎯 當前進度
 
-**階段一：CDK 基礎**
+**階段一：CDK 基礎** ✅ **完成**
 - [x] 步驟 1: 環境驗證 ✅
-- [x] 步驟 2: 第一個 VPC ✅
-- [ ] 步驟 3: Infrastructure as Code 概念 ← 下一步
+- [x] 步驟 2: 第一個 VPC ✅  
+- [x] 步驟 3: Infrastructure as Code 概念 ✅
+
+**階段二：網路基礎**
+- [x] 步驟 4: 建立 Subnet 和 Route Table (進行中) ← 下一步
 
 **目前狀態**: 
+- ✅ 階段一：CDK 基礎 完全完成
 - ✅ CDK 版本確認 (2.1020.2)
 - ✅ AWS CLI 配置完成
 - ✅ Region 設定為 ap-northeast-2 (首爾)
-- ✅ 學習計劃建立並提交到 Git (commit: 9f0da17)
-- ✅ 專案編譯成功 (階段 2B-1)
-- ✅ CloudFormation 模板生成成功 (階段 2B-2)
-- ✅ 變更清單檢視完成 (階段 2B-3)
-- ✅ 成本優化修改完成 (階段 2B-3.1)
-- ✅ CDK Bootstrap 完成 (階段 2B-4a)
-- ✅ 首次 CDK 部署成功 (階段 2B-4b)
-- ✅ AWS Console 驗證完成 (階段 2C)
-- 🔄 下一步：學習 Infrastructure as Code 概念
+- ✅ 學習計劃建立並提交到 Git
+- ✅ 專案編譯成功
+- ✅ CloudFormation 模板生成成功
+- ✅ 變更清單檢視完成
+- ✅ 成本優化修改完成
+- ✅ CDK Bootstrap 完成
+- ✅ 首次 CDK 部署成功
+- ✅ AWS Console 驗證完成
+- ✅ Infrastructure as Code 概念理解完成
+- 🔄 下一步：深入理解路由表的配置和運作原理
 
-**🎉 重要里程碑達成**: 成功部署第一個 VPC！
+**🎉 重要里程碑達成**: 階段一：CDK 基礎 完全完成！準備深入學習 AWS 網路服務！
 
-## 🎉 恭喜！步驟 2 完全完成
+## 🎉 恭喜！階段一：CDK 基礎 完全完成！
 
 您已經成功：
 - ✅ 設定開發環境
-- ✅ 配置 AWS CLI
+- ✅ 配置 AWS CLI  
 - ✅ 建立學習計劃
 - ✅ 學會基本的 Git 操作
 - ✅ 理解 CDK 專案結構
@@ -202,8 +218,10 @@ cdk destroy
 - ✅ 部署第一個 VPC
 - ✅ 應用成本優化思維
 - ✅ 驗證 AWS 資源
+- ✅ 深度理解 Infrastructure as Code 概念
+- ✅ 體驗 CDK 的智慧決策引擎
 
-**準備進入步驟 3**: 現在可以深入理解 Infrastructure as Code 概念！
+**準備進入階段二：網路基礎**: 現在可以深入學習路由表的配置和運作原理！
 
 ## 📍 Region 重要說明
 
