@@ -60,14 +60,60 @@
 #### 步驟 4: 建立 Subnet 和 Route Table
 - [x] 學習 Public/Private Subnet 概念 ✅
 - [x] 實作三層網路架構 ✅
-- [ ] 理解路由表的配置 ← 下一步
-- [ ] 測試子網路連通性
+- [x] 理解路由表的配置 ✅
+- [ ] 測試子網路連通性 ← 下一步
+
+**🎉 步驟 4A 完成！**
+
+**重要理解成果**：
+- ✅ 路由表數量：7個 (6個CDK + 1個Default)
+- ✅ Public vs Private 差異：0.0.0.0/0 路由的存在
+- ✅ 流量路徑：Public (local→IGW→外部) vs Private (timeout)
+- ✅ 網路隔離實現：透過路由表控制而非物理隔離
+
+**🎉 步驟 4B: 架構設計思維 完成！**
+
+**進階架構理解**：
+- ✅ 三層架構設計：ALB(Public) → ECS(App) → RDS(Database)
+- ✅ 高可用性：跨 AZ 部署避免單點故障
+- ✅ 安全性分層：透過 Subnet 隔離 + Security Groups 控制
+- ✅ 成本最佳化：VPC Endpoints vs NAT Gateway 權衡分析
+- ✅ 合規性考量：資料庫完全隔離，便於審計和監控
 
 #### 步驟 5: 網路閘道優化
-- [x] 學習 Internet Gateway 概念
-- [x] 理解 NAT Gateway 作用
-- [ ] 移除 NAT Gateway 進行成本優化
-- [ ] 設定 VPC Endpoints
+- [x] 學習 Internet Gateway 概念 ✅
+- [x] 理解 NAT Gateway 作用 ✅
+- [x] 學習 VPC Endpoints 概念 ✅
+- [ ] 實作 VPC Endpoints 進行成本優化 ← 進行中
+
+**🎯 步驟 5C: 實作 S3 Gateway Endpoint**
+
+**任務內容**：
+- [ ] 在 CDK 中新增 S3 Gateway Endpoint 程式碼
+- [ ] 執行 `cdk diff` 觀察基礎設施變化
+- [ ] 分析路由表的自動更新
+- [ ] 理解免費 Gateway Endpoint 的價值
+
+**學習重點**：
+- VPC Endpoints 的實際實現
+- 路由表的動態更新機制
+- Infrastructure as Code 的精確控制
+
+**🎉 步驟 5A: VPC Endpoints 理論完成！**
+
+**重要概念掌握**：
+- ✅ Gateway Endpoints：免費，支援 S3/DynamoDB，保持私有 + 節省成本
+- ✅ Interface Endpoints：付費($0.01/小時)，支援大多數 AWS 服務
+- ✅ 成本比較：Interface Endpoints ($14.4/月) vs NAT Gateway ($34/月)
+- ✅ 架構影響：直接私有連接 vs 透過 Internet 路由
+
+**🎉 步驟 5B: 成本效益分析完成！**
+
+**深度理解**：
+- ✅ 適用場景：2-5個 AWS 服務時 Interface Endpoints 更划算
+- ✅ 必須使用 NAT Gateway：第三方服務、軟體包下載、固定IP需求
+- ✅ 混合策略：開發階段彈性，生產階段成本優化
+- ✅ YARP 專案建議：Gateway(S3) + Interface(ECR+CloudWatch) ≈ $21.6/月
 
 #### 步驟 6: 實作 Security Groups
 - [ ] 學習防火牆規則
