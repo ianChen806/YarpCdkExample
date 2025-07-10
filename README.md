@@ -84,20 +84,23 @@
 - [x] 學習 Internet Gateway 概念 ✅
 - [x] 理解 NAT Gateway 作用 ✅
 - [x] 學習 VPC Endpoints 概念 ✅
-- [ ] 實作 VPC Endpoints 進行成本優化 ← 進行中
+- [x] 實作 VPC Endpoints 進行成本優化 ✅
 
-**🎯 步驟 5C: 實作 S3 Gateway Endpoint**
+**🎉 步驟 5C: 實作 S3 Gateway Endpoint 完成！**
 
-**任務內容**：
-- [ ] 在 CDK 中新增 S3 Gateway Endpoint 程式碼
-- [ ] 執行 `cdk diff` 觀察基礎設施變化
-- [ ] 分析路由表的自動更新
-- [ ] 理解免費 Gateway Endpoint 的價值
+**完成成果**：
+- ✅ 在 CDK 中新增 S3 Gateway Endpoint 程式碼
+- ✅ 執行 `cdk diff` 觀察基礎設施變化
+- ✅ 分析路由表的自動更新機制
+- ✅ 理解免費 Gateway Endpoint 的價值
+- ✅ 掌握 CDK 子網路選擇邏輯 (`SubnetGroupName`)
+- ✅ 驗證 App 和 Database 子網路都正確關聯
 
-**學習重點**：
-- VPC Endpoints 的實際實現
-- 路由表的動態更新機制
-- Infrastructure as Code 的精確控制
+**重要學習成果**：
+- CDK 子網路選擇：`SubnetType` vs `SubnetGroupName`
+- AWS 服務代管：自動路由表更新機制
+- Infrastructure as Code：精確控制 vs 智慧推論
+- 網路架構實務：私有子網路的 S3 存取優化
 
 **🎉 步驟 5A: VPC Endpoints 理論完成！**
 
@@ -231,7 +234,9 @@ cdk destroy
 - [x] 步驟 3: Infrastructure as Code 概念 ✅
 
 **階段二：網路基礎**
-- [x] 步驟 4: 建立 Subnet 和 Route Table (進行中) ← 下一步
+- [x] 步驟 4: 建立 Subnet 和 Route Table ✅
+- [x] 步驟 5: 網路閘道優化 ✅
+- [ ] 步驟 6: 實作 Security Groups ← 下一步
 
 **目前狀態**: 
 - ✅ 階段一：CDK 基礎 完全完成
@@ -247,9 +252,30 @@ cdk destroy
 - ✅ 首次 CDK 部署成功
 - ✅ AWS Console 驗證完成
 - ✅ Infrastructure as Code 概念理解完成
-- 🔄 下一步：深入理解路由表的配置和運作原理
+- ✅ 深入理解路由表的配置和運作原理
+- ✅ 成功實作 S3 Gateway Endpoint
+- ✅ 掌握 CDK 子網路選擇邏輯
+- 🔄 下一步：實作 Security Groups 防火牆規則
 
-**🎉 重要里程碑達成**: 階段一：CDK 基礎 完全完成！準備深入學習 AWS 網路服務！
+**🎉 重要里程碑達成**: 階段二網路基礎即將完成！成功實作 S3 Gateway Endpoint，掌握 AWS 網路服務精髓！
+
+## 🎉 恭喜！步驟 5：網路閘道優化 完全完成！
+
+您已經成功：
+- ✅ 完全理解 VPC Endpoints 的價值和原理
+- ✅ 深入分析成本效益權衡
+- ✅ 實作 S3 Gateway Endpoint
+- ✅ 掌握 CDK 子網路選擇邏輯
+- ✅ 驗證 AWS 服務的自動路由表更新
+- ✅ 體驗 Infrastructure as Code 的精確控制
+
+**重要架構理解**：
+- 🔄 **Gateway vs Interface Endpoints**：成本 vs 功能權衡
+- 🧠 **CDK 智慧推論**：`SubnetType` vs `SubnetGroupName`
+- 🔧 **AWS 服務代管**：自動路由表更新機制
+- 💰 **成本優化策略**：免費 Gateway 優於付費 Interface
+
+**準備進入步驟 6：Security Groups**！您即將學習 AWS 網路安全的核心組件！
 
 ## 🎉 恭喜！階段一：CDK 基礎 完全完成！
 

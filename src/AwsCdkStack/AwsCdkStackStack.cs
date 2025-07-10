@@ -25,7 +25,7 @@ namespace AwsCdkStack
                     {
                         Name = "App",
                         SubnetType = SubnetType.PRIVATE_ISOLATED,
-                        CidrMask = 20
+                        CidrMask = 20,
                     },
                     new SubnetConfiguration
                     {
@@ -34,6 +34,16 @@ namespace AwsCdkStack
                         CidrMask = 20
                     }
                 }
+            });
+            var s3Endpoint = new GatewayVpcEndpoint(this, "S3Endpoint", new GatewayVpcEndpointProps
+            {
+                Vpc = vpc,
+                Service = GatewayVpcEndpointAwsService.S3,
+                Subnets =
+                [
+                    new SubnetSelection() { SubnetGroupName = "App" },
+                    new SubnetSelection() { SubnetGroupName = "Database" },
+                ]
             });
         }
     }
