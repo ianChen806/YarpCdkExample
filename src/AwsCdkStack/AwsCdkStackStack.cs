@@ -13,28 +13,39 @@ namespace AwsCdkStack
             {
                 MaxAzs = 2,
                 IpAddresses = IpAddresses.Cidr("10.16.0.0/16"),
-                SubnetConfiguration = new ISubnetConfiguration[]
-                {
-                    new SubnetConfiguration
-                    {
-                        Name = "Public",
-                        SubnetType = SubnetType.PUBLIC,
-                        CidrMask = 20,
-                    },
-                    new SubnetConfiguration
-                    {
-                        Name = "App",
-                        SubnetType = SubnetType.PRIVATE_ISOLATED,
-                        CidrMask = 20,
-                    },
-                    new SubnetConfiguration
-                    {
-                        Name = "Database",
-                        SubnetType = SubnetType.PRIVATE_ISOLATED,
-                        CidrMask = 20
-                    }
-                }
+                SubnetConfiguration = SubnetConfigurations()
             });
+            AddS3GatewayEndpoint(vpc);
+        }
+
+        private static ISubnetConfiguration[] SubnetConfigurations()
+        {
+            var subnetConfigurations = new ISubnetConfiguration[]
+            {
+                new SubnetConfiguration
+                {
+                    Name = "Public",
+                    SubnetType = SubnetType.PUBLIC,
+                    CidrMask = 20,
+                },
+                new SubnetConfiguration
+                {
+                    Name = "App",
+                    SubnetType = SubnetType.PRIVATE_ISOLATED,
+                    CidrMask = 20,
+                },
+                new SubnetConfiguration
+                {
+                    Name = "Database",
+                    SubnetType = SubnetType.PRIVATE_ISOLATED,
+                    CidrMask = 20
+                }
+            };
+            return subnetConfigurations;
+        }
+
+        private void AddS3GatewayEndpoint(Vpc vpc)
+        {
             var s3Endpoint = new GatewayVpcEndpoint(this, "S3Endpoint", new GatewayVpcEndpointProps
             {
                 Vpc = vpc,
