@@ -119,10 +119,25 @@
 - ✅ YARP 專案建議：Gateway(S3) + Interface(ECR+CloudWatch) ≈ $21.6/月
 
 #### 步驟 6: 實作 Security Groups
-- [ ] 學習防火牆規則
-- [ ] 設定安全群組
-- [ ] 理解最小權限原則
-- [ ] 測試安全群組規則
+- [x] 學習防火牆規則 ✅
+- [x] 設定安全群組 ✅
+- [x] 理解最小權限原則 ✅
+- [x] 測試安全群組規則 ✅
+
+**🎉 步驟 6 完全完成！**
+
+**實作成果**：
+- ✅ 建立 ALB Security Group (HTTP/HTTPS from Internet)
+- ✅ 建立 ECS Security Group (TCP/8080 from ALB only)
+- ✅ 實現 Security Group 引用機制
+- ✅ 應用最小權限原則
+- ✅ 成功部署並驗證設定
+
+**重要學習成果**：
+- 🛡️ **防火牆規則設計**：Ingress/Egress 的精確控制
+- 🔗 **Security Group 引用**：動態安全控制的威力
+- 🎯 **最小權限原則**：只開放必要的存取
+- 🚀 **Infrastructure as Code**：程式化的安全管理
 
 ### 階段三：運算服務 (2-3 週)
 **學習目標**：掌握容器化服務
@@ -233,13 +248,17 @@ cdk destroy
 - [x] 步驟 2: 第一個 VPC ✅  
 - [x] 步驟 3: Infrastructure as Code 概念 ✅
 
-**階段二：網路基礎**
+**階段二：網路基礎** ✅ **完成**
 - [x] 步驟 4: 建立 Subnet 和 Route Table ✅
 - [x] 步驟 5: 網路閘道優化 ✅
-- [ ] 步驟 6: 實作 Security Groups ← 下一步
+- [x] 步驟 6: 實作 Security Groups ✅
+
+**階段三：運算服務**
+- [ ] 步驟 7: 建立 ECS Cluster ← 下一步
 
 **目前狀態**: 
 - ✅ 階段一：CDK 基礎 完全完成
+- ✅ 階段二：網路基礎 完全完成
 - ✅ CDK 版本確認 (2.1020.2)
 - ✅ AWS CLI 配置完成
 - ✅ Region 設定為 ap-northeast-2 (首爾)
@@ -255,9 +274,11 @@ cdk destroy
 - ✅ 深入理解路由表的配置和運作原理
 - ✅ 成功實作 S3 Gateway Endpoint
 - ✅ 掌握 CDK 子網路選擇邏輯
-- 🔄 下一步：實作 Security Groups 防火牆規則
+- ✅ 完成 Security Groups 防火牆規則實作
+- ✅ 掌握最小權限原則和安全設計
+- 🔄 下一步：建立 ECS Cluster 進入運算服務階段
 
-**🎉 重要里程碑達成**: 階段二網路基礎即將完成！成功實作 S3 Gateway Endpoint，掌握 AWS 網路服務精髓！
+**🎉 重要里程碑達成**: 階段二：網路基礎 完全完成！成功建立完整的 AWS 網路架構，準備進入運算服務學習！
 
 ## 🎉 恭喜！步驟 5：網路閘道優化 完全完成！
 
@@ -276,6 +297,29 @@ cdk destroy
 - 💰 **成本優化策略**：免費 Gateway 優於付費 Interface
 
 **準備進入步驟 6：Security Groups**！您即將學習 AWS 網路安全的核心組件！
+
+## 🎉 恭喜！階段二：網路基礎 完全完成！
+
+您已經成功建立了完整的 AWS 網路架構：
+- ✅ **VPC 架構**：三層網路設計 (Public/App/Database)
+- ✅ **路由控制**：深入理解路由表運作機制
+- ✅ **成本優化**：S3 Gateway Endpoint 免費私有存取
+- ✅ **安全防護**：Security Groups 最小權限設計
+- ✅ **智慧整合**：Security Group 引用動態控制
+
+**重要架構技能**：
+- 🏗️ **網路分層**：Public/Private 子網路隔離
+- 🔒 **安全設計**：多層次防護機制
+- 💰 **成本意識**：Gateway vs Interface Endpoints 權衡
+- 🎯 **最佳實務**：AWS Well-Architected 網路原則
+
+**CDK 進階技能**：
+- 🧠 **Infrastructure as Code**：程式化的基礎設施管理
+- 🔄 **智慧推論**：CDK 自動決策與手動控制的平衡
+- 🎯 **精確控制**：SubnetGroupName vs SubnetType 的選擇
+- 🚀 **版本控制**：基礎設施變更的追蹤和管理
+
+**準備進入階段三：運算服務**！您即將學習 ECS 容器編排的核心技能！
 
 ## 🎉 恭喜！階段一：CDK 基礎 完全完成！
 

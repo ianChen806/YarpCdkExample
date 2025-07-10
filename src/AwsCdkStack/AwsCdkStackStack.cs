@@ -9,13 +9,57 @@ namespace AwsCdkStack
         internal AwsCdkStackStack(Construct scope, string id, IStackProps props = null)
             : base(scope, id, props)
         {
+            var vpc = CreateVpc();
+            CreateS3GatewayEndpoint(vpc);
+
+            var albSg = CreateAlbSg(vpc);
+            CreateEcsSg(vpc, albSg);
+        }
+
+        private Vpc CreateVpc()
+        {
             var vpc = new Vpc(this, "MyVpc", new VpcProps
             {
                 MaxAzs = 2,
                 IpAddresses = IpAddresses.Cidr("10.16.0.0/16"),
                 SubnetConfiguration = SubnetConfigurations()
             });
-            AddS3GatewayEndpoint(vpc);
+            return vpc;
+        }
+
+        private SecurityGroup CreateEcsSg(Vpc vpc, SecurityGroup albSg)
+        {
+            var ecsSg = new SecurityGroup(this, "ECS-SG", new SecurityGroupProps()
+            {
+                Vpc = vpc,
+                Description = "ECS-SG",
+                AllowAllOutbound = true,
+                SecurityGroupName = "ECS-SG"
+            });
+            ecsSg.AddIngressRule(
+                Peer.SecurityGroupId(albSg.SecurityGroupId),
+                Port.Tcp(8080),
+                "allow traffic from ALB");
+            return ecsSg;
+        }
+
+        private SecurityGroup CreateAlbSg(Vpc vpc)
+        {
+            var albSg = new SecurityGroup(this, "ALB-SG", new SecurityGroupProps()
+            {
+                Vpc = vpc,
+                Description = "ALB-SG",
+                AllowAllOutbound = true,
+                SecurityGroupName = "ALB-SG",
+            });
+            albSg.AddIngressRule(
+                Peer.AnyIpv4(),
+                Port.HTTP, "allow http from anywhere");
+            albSg.AddIngressRule(
+                Peer.AnyIpv4(),
+                Port.HTTPS,
+                "allow https from anywhere");
+            return albSg;
         }
 
         private static ISubnetConfiguration[] SubnetConfigurations()
@@ -44,7 +88,7 @@ namespace AwsCdkStack
             return subnetConfigurations;
         }
 
-        private void AddS3GatewayEndpoint(Vpc vpc)
+        private void CreateS3GatewayEndpoint(Vpc vpc)
         {
             var s3Endpoint = new GatewayVpcEndpoint(this, "S3Endpoint", new GatewayVpcEndpointProps
             {
