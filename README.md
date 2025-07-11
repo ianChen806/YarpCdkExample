@@ -157,10 +157,23 @@
 - ✅ Infrastructure as Code：漸進式建構複雜架構
 
 #### 步驟 8: 建立第一個 ECS Service
-- [ ] 學習 Task Definition 概念
-- [ ] 部署簡單的 Hello World 容器
-- [ ] 驗證容器運行狀態
-- [ ] 理解 ECS Service 概念
+- [x] 學習 Task Definition 概念 ✅
+- [x] 部署簡單的 Hello World 容器 ✅
+- [x] 驗證容器運行狀態 ✅
+- [x] 理解 ECS Service 概念 ✅
+- [x] 解決 Fargate Port 配置問題 ✅
+- [x] 修正網路架構（PRIVATE_WITH_EGRESS）✅
+- [x] 處理映像拉取網路依賴 ✅
+
+**🎉 步驟 8 完全完成！**
+
+**重要學習成果**：
+- ✅ **Task Definition vs Service**：藍圖 vs 生命週期管理
+- ✅ **Fargate 網路限制**：awsvpc 模式的 Port 配置
+- ✅ **映像拉取機制**：網路架構對容器的實際影響
+- ✅ **CloudFormation 依賴**：資源建立順序和重試機制
+- ✅ **成本優化思維**：MaxAzs=1 節省 50% NAT Gateway 費用
+- ✅ **錯誤診斷技能**：從 Task 失敗到根本原因分析
 
 #### 步驟 9: IAM 權限設定
 - [ ] 建立 ECS Task Role

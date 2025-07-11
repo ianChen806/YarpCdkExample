@@ -14,9 +14,11 @@ namespace AwsCdkStack
             CreateS3GatewayEndpoint(vpc);
 
             var albSg = CreateAlbSg(vpc);
-            CreateEcsSg(vpc, albSg);
+            var ecsSg = CreateEcsSg(vpc, albSg);
 
-            CreateEcsCluster(vpc);
+            var ecsCluster = CreateEcsCluster(vpc);
+            var ecsService = CreateEcsService(ecsSg, ecsCluster);
+            ecsService.Node.AddDependency(vpc); // wait vpc(net gateway)
         }
 
         private Cluster CreateEcsCluster(Vpc vpc)
@@ -28,11 +30,50 @@ namespace AwsCdkStack
             return ecsCluster;
         }
 
+        private FargateService CreateEcsService(SecurityGroup ecsSg, Cluster ecsCluster)
+        {
+            var ecsService = new FargateService(this, "MyService", new FargateServiceProps()
+            {
+                VpcSubnets = new SubnetSelection()
+                {
+                    SubnetGroupName = "App"
+                },
+                SecurityGroups = [ecsSg],
+                DesiredCount = 1,
+                TaskDefinition = CreateTaskDef(),
+                Cluster = ecsCluster,
+                MinHealthyPercent = 100,
+            });
+            return ecsService;
+        }
+
+        private TaskDefinition CreateTaskDef()
+        {
+            var taskDefinition = new TaskDefinition(this, "MyTaskDefinition", new TaskDefinitionProps
+            {
+                Cpu = "256",
+                MemoryMiB = "512",
+                Compatibility = Compatibility.FARGATE,
+            });
+            taskDefinition.AddContainer("nginx", new ContainerDefinitionOptions()
+            {
+                Image = new RepositoryImage("nginx:latest"),
+                PortMappings = new PortMapping[]
+                {
+                    new PortMapping
+                    {
+                        ContainerPort = 80,
+                    }
+                },
+            });
+            return taskDefinition;
+        }
+
         private Vpc CreateVpc()
         {
             var vpc = new Vpc(this, "MyVpc", new VpcProps
             {
-                MaxAzs = 2,
+                MaxAzs = 1,
                 IpAddresses = IpAddresses.Cidr("10.16.0.0/16"),
                 SubnetConfiguration = SubnetConfigurations()
             });
@@ -50,7 +91,7 @@ namespace AwsCdkStack
             });
             ecsSg.AddIngressRule(
                 Peer.SecurityGroupId(albSg.SecurityGroupId),
-                Port.Tcp(8080),
+                Port.Tcp(80),
                 "allow traffic from ALB");
             return ecsSg;
         }
@@ -87,7 +128,7 @@ namespace AwsCdkStack
                 new SubnetConfiguration
                 {
                     Name = "App",
-                    SubnetType = SubnetType.PRIVATE_ISOLATED,
+                    SubnetType = SubnetType.PRIVATE_WITH_EGRESS,
                     CidrMask = 20,
                 },
                 new SubnetConfiguration
