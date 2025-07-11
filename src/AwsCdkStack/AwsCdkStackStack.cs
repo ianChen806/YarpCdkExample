@@ -1,5 +1,6 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
+using Amazon.CDK.AWS.ECS;
 using Constructs;
 
 namespace AwsCdkStack
@@ -14,6 +15,17 @@ namespace AwsCdkStack
 
             var albSg = CreateAlbSg(vpc);
             CreateEcsSg(vpc, albSg);
+
+            CreateEcsCluster(vpc);
+        }
+
+        private Cluster CreateEcsCluster(Vpc vpc)
+        {
+            var ecsCluster = new Cluster(this, "MyCluster", new ClusterProps
+            {
+                Vpc = vpc,
+            });
+            return ecsCluster;
         }
 
         private Vpc CreateVpc()
