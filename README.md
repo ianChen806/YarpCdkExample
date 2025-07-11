@@ -176,10 +176,23 @@
 - ✅ **錯誤診斷技能**：從 Task 失敗到根本原因分析
 
 #### 步驟 9: IAM 權限設定
-- [ ] 建立 ECS Task Role
-- [ ] 建立 ECS Execution Role
-- [ ] 理解最小權限原則
-- [ ] 測試權限設定
+- [x] 建立 ECS Task Role ✅
+- [x] 建立 ECS Execution Role ✅
+- [x] 理解最小權限原則 ✅
+- [x] 測試權限設定 ✅
+- [x] 學習 ServicePrincipal 概念 ✅
+- [x] 掌握 CDK 依賴管理 ✅
+- [x] 處理容器健康檢查配置 ✅
+
+**🎉 步驟 9 完全完成！**
+
+**重要學習成果**：
+- ✅ **IAM 雙重角色架構**：Task Role（應用程式權限）vs Execution Role（ECS 服務權限）
+- ✅ **ServicePrincipal 信任關係**：`ecs-tasks.amazonaws.com` 的作用和來源
+- ✅ **最小權限原則實踐**：精確的 S3 存取控制 (`arn:aws:s3:::bucket/*`)
+- ✅ **CDK 依賴管理最佳實務**：避免過度的顯式依賴
+- ✅ **容器映像工具依賴**：nginx 映像的極簡特性
+- ✅ **錯誤處理和快速修復**：CloudFormation 回滾機制
 
 ### 階段四：負載平衡器 (1-2 週)
 **學習目標**：掌握流量分配

@@ -1,6 +1,7 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.ECS;
+using Amazon.CDK.AWS.IAM;
 using Constructs;
 
 namespace AwsCdkStack
@@ -18,7 +19,6 @@ namespace AwsCdkStack
 
             var ecsCluster = CreateEcsCluster(vpc);
             var ecsService = CreateEcsService(ecsSg, ecsCluster);
-            ecsService.Node.AddDependency(vpc); // wait vpc(net gateway)
         }
 
         private Cluster CreateEcsCluster(Vpc vpc)
@@ -42,7 +42,6 @@ namespace AwsCdkStack
                 DesiredCount = 1,
                 TaskDefinition = CreateTaskDef(),
                 Cluster = ecsCluster,
-                MinHealthyPercent = 100,
             });
             return ecsService;
         }
@@ -54,6 +53,8 @@ namespace AwsCdkStack
                 Cpu = "256",
                 MemoryMiB = "512",
                 Compatibility = Compatibility.FARGATE,
+                TaskRole = CreateTaskRole(),
+                ExecutionRole = CreateExecutionRole()
             });
             taskDefinition.AddContainer("nginx", new ContainerDefinitionOptions()
             {
@@ -65,8 +66,47 @@ namespace AwsCdkStack
                         ContainerPort = 80,
                     }
                 },
+                HealthCheck = new HealthCheck()
+                {
+                    Command = ["CMD-SHELL", "nginx -t || exit 1"],
+                    Interval = Duration.Seconds(30),
+                    Timeout = Duration.Seconds(5),
+                    Retries = 3,
+                    StartPeriod = Duration.Seconds(60)
+                }
             });
             return taskDefinition;
+        }
+
+        private Role CreateExecutionRole()
+        {
+            var executionRole = new Role(this, "MyExecutionRole", new RoleProps()
+            {
+                AssumedBy = new ServicePrincipal("ecs-tasks.amazonaws.com"),
+                ManagedPolicies =
+                [
+                    ManagedPolicy.FromAwsManagedPolicyName(
+                        "service-role/AmazonECSTaskExecutionRolePolicy")
+                ]
+            });
+            return executionRole;
+        }
+
+        private Role CreateTaskRole()
+        {
+            var taskRole = new Role(this, "MyTaskRole", new RoleProps()
+            {
+                AssumedBy = new ServicePrincipal("ecs-tasks.amazonaws.com"),
+                Description = "Role for ECS Tasks"
+            });
+
+            taskRole.AddToPolicy(new PolicyStatement(new PolicyStatementProps()
+            {
+                Effect = Effect.ALLOW,
+                Actions = ["s3:GetObject"],
+                Resources = ["arn:aws:s3:::my-test-bucket-yarp-sample/*"]
+            }));
+            return taskRole;
         }
 
         private Vpc CreateVpc()
