@@ -213,17 +213,28 @@
 - ✅ 熟悉 ALB、Target Group、Listener、Security Group 的正確設計與關聯
 
 #### 步驟 11: 網路整合測試
-- [ ] 測試 ALB → ECS 連通性
-- [ ] 驗證安全群組規則
+- [x] 測試 ALB → ECS 連通性 ✅
+- [x] 驗證安全群組規則 ✅
 - [ ] 測試故障轉移
 - [ ] 理解網路流量路徑
+
+**🎉 步驟 11A: 網路整合測試 進行中！**
+
+**實作成果**：
+- ✅ ALB → ECS 連通性測試完成，流量正常導向 nginx 容器
+- ✅ Security Groups 規則驗證通過：ALB SG 允許 Internet 存取，ECS SG 僅允許來自 ALB 的流量
+- ✅ 建立 YarpProxy 專案：包含 Header Transform 和 Domain Header Service 功能
+- ✅ 建立 YarpTarget 專案：WeatherForecast API 作為後端服務
+- ✅ 配置 YARP 反向代理：YarpProxy → YarpTarget (localhost:5128) 路由設定完成
 
 ### 階段五：YARP 應用 (2-3 週)
 **學習目標**：實作具體應用
 
 #### 步驟 12: 建立 YARP 專案
 - [x] 學習 YARP 基本概念 ✅
-- [ ] 建立簡單的反向代理
+- [x] 建立簡單的反向代理 ✅
+- [x] 建立後端測試服務 ✅
+- [ ] 本機測試 YARP 反向代理功能 ← **當前任務**
 - [ ] 學習 Docker 容器化
 - [ ] 推送映像到 ECR
 
@@ -301,13 +312,17 @@ cdk destroy
 - [x] 步驟 8: 建立第一個 ECS Service ✅
 - [x] 步驟 9: IAM 權限設定 ✅
 
-**階段四：負載平衡器**
+**階段四：負載平衡器** 🔄 **進行中**
 - [x] 步驟 10: 建立 Application Load Balancer ✅
-- [ ] 步驟 11: 網路整合測試 ← 下一步
+- [x] 步驟 11: 網路整合測試 (進行中) ✅
+
+**階段五：YARP 應用** 🔄 **開始**
+- [x] 步驟 12: 建立 YARP 專案 (進行中) ✅
 
 **目前狀態**: 
-- ✅ 已進入 YARP 應用階段，完成 YARP 理論學習，理解其架構與核心組件
-- 🔄 下一步：本機建立 YARP 專案並完成靜態路由測試
+- ✅ ALB → ECS 架構完成並通過連通性和安全測試
+- ✅ 建立 YarpProxy 和 YarpTarget 專案，配置完成
+- 🔄 下一步：本機測試 YARP 反向代理功能
 
 **🎉 重要里程碑達成**: 階段二：網路基礎 完全完成！成功建立完整的 AWS 網路架構，準備進入運算服務學習！
 
