@@ -30,11 +30,11 @@ public class OriginHeaderTransformProvider : ITransformProvider
             var origin = GetOrigin(r);
             if (origin != null && _map.TryGetValue(origin, out var header))
             {
-                r.ProxyRequest.Headers.Add("Code", header);
+                r.ProxyRequest.Headers.Add("X-Source", header);
             }
             else
             {
-                r.ProxyRequest.Headers.Add("Code", "unknow");
+                r.ProxyRequest.Headers.Add("X-Source", "unknow");
             }
 
             await Task.CompletedTask;
@@ -43,9 +43,8 @@ public class OriginHeaderTransformProvider : ITransformProvider
 
     private static string? GetOrigin(RequestTransformContext r)
     {
-        var origin = r.HttpContext.Request.Headers.Origin.FirstOrDefault()
-            ?? r.HttpContext.Request.Headers.Host.FirstOrDefault();
-        return origin;
+        r.HttpContext.Request.Headers.TryGetValue("Source", out var source);
+        return source;
     }
 
     private async Task RefreshLoopAsync()

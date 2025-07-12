@@ -226,6 +226,10 @@
 - ✅ 建立 YarpProxy 專案：包含 Header Transform 和 Domain Header Service 功能
 - ✅ 建立 YarpTarget 專案：WeatherForecast API 作為後端服務
 - ✅ 配置 YARP 反向代理：YarpProxy → YarpTarget (localhost:5128) 路由設定完成
+- ✅ 本機測試完成：YarpTarget 服務正常運行於 localhost:5128
+- ✅ 反向代理功能驗證：YarpProxy 成功轉發請求到後端服務
+- ✅ Header Transform 功能確認：X-Source → Source header 對應正常運作
+- ✅ API 端點測試：/source 端點成功回傳自定義 header 資訊
 
 ### 階段五：YARP 應用 (2-3 週)
 **學習目標**：實作具體應用
@@ -234,8 +238,8 @@
 - [x] 學習 YARP 基本概念 ✅
 - [x] 建立簡單的反向代理 ✅
 - [x] 建立後端測試服務 ✅
-- [ ] 本機測試 YARP 反向代理功能 ← **當前任務**
-- [ ] 學習 Docker 容器化
+- [x] 本機測試 YARP 反向代理功能 ✅
+- [ ] 學習 Docker 容器化 ← **下一步**
 - [ ] 推送映像到 ECR
 
 #### 步驟 13: S3 整合
