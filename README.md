@@ -198,10 +198,19 @@
 **學習目標**：掌握流量分配
 
 #### 步驟 10: 建立 Application Load Balancer
-- [ ] 學習負載平衡器概念
-- [ ] 配置 ALB 和 Target Group
-- [ ] 設定健康檢查
-- [ ] 測試負載平衡功能
+- [x] 學習負載平衡器概念 ✅
+- [x] 配置 ALB 和 Target Group ✅
+- [x] 設定健康檢查 ✅
+- [x] 測試負載平衡功能 ✅
+
+**🎉 步驟 10 完全完成！**
+
+**本次學習重點與驗證成果**：
+- ✅ ALB 必須跨兩個 AZ 部署，否則 CloudFormation 會報錯（"At least two subnets in two different Availability Zones must be specified"）
+- ✅ 成功調整 VPC 設定，讓 Public Subnet 跨兩個 AZ
+- ✅ ALB 狀態 active，Target Group 健康檢查為 healthy
+- ✅ ALB DNS 可正常顯示 nginx 歡迎頁面，流量順利導向 ECS Task
+- ✅ 熟悉 ALB、Target Group、Listener、Security Group 的正確設計與關聯
 
 #### 步驟 11: 網路整合測試
 - [ ] 測試 ALB → ECS 連通性
@@ -287,30 +296,18 @@ cdk destroy
 - [x] 步驟 5: 網路閘道優化 ✅
 - [x] 步驟 6: 實作 Security Groups ✅
 
-**階段三：運算服務**
-- [ ] 步驟 7: 建立 ECS Cluster ← 下一步
+**階段三：運算服務** ✅ **完成**
+- [x] 步驟 7: 建立 ECS Cluster ✅
+- [x] 步驟 8: 建立第一個 ECS Service ✅
+- [x] 步驟 9: IAM 權限設定 ✅
+
+**階段四：負載平衡器**
+- [x] 步驟 10: 建立 Application Load Balancer ✅
+- [ ] 步驟 11: 網路整合測試 ← 下一步
 
 **目前狀態**: 
-- ✅ 階段一：CDK 基礎 完全完成
-- ✅ 階段二：網路基礎 完全完成
-- ✅ CDK 版本確認 (2.1020.2)
-- ✅ AWS CLI 配置完成
-- ✅ Region 設定為 ap-northeast-2 (首爾)
-- ✅ 學習計劃建立並提交到 Git
-- ✅ 專案編譯成功
-- ✅ CloudFormation 模板生成成功
-- ✅ 變更清單檢視完成
-- ✅ 成本優化修改完成
-- ✅ CDK Bootstrap 完成
-- ✅ 首次 CDK 部署成功
-- ✅ AWS Console 驗證完成
-- ✅ Infrastructure as Code 概念理解完成
-- ✅ 深入理解路由表的配置和運作原理
-- ✅ 成功實作 S3 Gateway Endpoint
-- ✅ 掌握 CDK 子網路選擇邏輯
-- ✅ 完成 Security Groups 防火牆規則實作
-- ✅ 掌握最小權限原則和安全設計
-- 🔄 下一步：建立 ECS Cluster 進入運算服務階段
+- ✅ ALB 已成功建立並驗證，Target Group 健康，ALB DNS 可正常存取 nginx 歡迎頁面
+- 🔄 下一步：網路整合測試與安全性驗證
 
 **🎉 重要里程碑達成**: 階段二：網路基礎 完全完成！成功建立完整的 AWS 網路架構，準備進入運算服務學習！
 

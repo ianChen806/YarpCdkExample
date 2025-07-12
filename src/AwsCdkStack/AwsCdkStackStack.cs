@@ -1,8 +1,10 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.ECS;
+using Amazon.CDK.AWS.ElasticLoadBalancingV2;
 using Amazon.CDK.AWS.IAM;
 using Constructs;
+using HealthCheck = Amazon.CDK.AWS.ECS.HealthCheck;
 
 namespace AwsCdkStack
 {
@@ -19,6 +21,51 @@ namespace AwsCdkStack
 
             var ecsCluster = CreateEcsCluster(vpc);
             var ecsService = CreateEcsService(ecsSg, ecsCluster);
+
+            var targetGroup = CreateTargetGroup(vpc);
+            targetGroup.AddTarget(ecsService);
+
+            var alb = CreateAlb(vpc, albSg);
+            AddAlbListener(alb, targetGroup);
+        }
+
+        private ApplicationTargetGroup CreateTargetGroup(Vpc vpc)
+        {
+            var targetGroup = new ApplicationTargetGroup(this, "MyTargetGroup", new ApplicationTargetGroupProps()
+            {
+                Vpc = vpc,
+                Port = 8080,
+                Protocol = ApplicationProtocol.HTTP,
+                HealthCheck = new Amazon.CDK.AWS.ElasticLoadBalancingV2.HealthCheck()
+                {
+                    Path = "/"
+                },
+            });
+            return targetGroup;
+        }
+
+        private static void AddAlbListener(ApplicationLoadBalancer alb, ApplicationTargetGroup targetGroup)
+        {
+            alb.AddListener("MyListener", new BaseApplicationListenerProps()
+            {
+                Port = 80,
+                DefaultTargetGroups = [targetGroup]
+            });
+        }
+
+        private ApplicationLoadBalancer CreateAlb(Vpc vpc, SecurityGroup albSg)
+        {
+            var alb = new ApplicationLoadBalancer(this, "MyLoadBalance", new ApplicationLoadBalancerProps()
+            {
+                Vpc = vpc,
+                SecurityGroup = albSg,
+                VpcSubnets = new SubnetSelection()
+                {
+                    SubnetGroupName = "Public",
+                },
+                InternetFacing = true,
+            });
+            return alb;
         }
 
         private Cluster CreateEcsCluster(Vpc vpc)
@@ -113,7 +160,7 @@ namespace AwsCdkStack
         {
             var vpc = new Vpc(this, "MyVpc", new VpcProps
             {
-                MaxAzs = 1,
+                MaxAzs = 2,
                 IpAddresses = IpAddresses.Cidr("10.16.0.0/16"),
                 SubnetConfiguration = SubnetConfigurations()
             });
