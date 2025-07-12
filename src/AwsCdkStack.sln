@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwsCdkStack", "AwsCdkStack\AwsCdkStack.csproj", "{86C80A39-4659-4985-A0C5-73DBEF40334C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YarpProxy", "YarpProxy\YarpProxy.csproj", "{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YarpTarget", "YarpTarget\YarpTarget.csproj", "{07937C80-7BB4-4A34-82EA-E77069A2AFBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,30 @@ Global
 		{86C80A39-4659-4985-A0C5-73DBEF40334C}.Release|x64.Build.0 = Release|Any CPU
 		{86C80A39-4659-4985-A0C5-73DBEF40334C}.Release|x86.ActiveCfg = Release|Any CPU
 		{86C80A39-4659-4985-A0C5-73DBEF40334C}.Release|x86.Build.0 = Release|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Debug|x64.Build.0 = Debug|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Debug|x86.Build.0 = Debug|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Release|x64.ActiveCfg = Release|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Release|x64.Build.0 = Release|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E06FB6E-8F8F-4FE8-B714-D2DDCAA28FBE}.Release|x86.Build.0 = Release|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Debug|x64.Build.0 = Debug|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Debug|x86.Build.0 = Debug|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Release|x64.ActiveCfg = Release|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Release|x64.Build.0 = Release|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Release|x86.ActiveCfg = Release|Any CPU
+		{07937C80-7BB4-4A34-82EA-E77069A2AFBD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
