@@ -3,6 +3,7 @@ using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.ECS;
 using Amazon.CDK.AWS.ElasticLoadBalancingV2;
 using Amazon.CDK.AWS.IAM;
+using Amazon.CDK.AWS.Logs;
 using Constructs;
 using HealthCheck = Amazon.CDK.AWS.ECS.HealthCheck;
 
@@ -130,12 +131,21 @@ namespace AwsCdkStack
                 },
                 HealthCheck = new HealthCheck()
                 {
-                    Command = ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"],
+                    Command = ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"],
                     Interval = Duration.Seconds(30),
                     Timeout = Duration.Seconds(5),
                     Retries = 3,
                     StartPeriod = Duration.Seconds(60)
-                }
+                },
+                Logging = LogDriver.AwsLogs(new AwsLogDriverProps()
+                {
+                    LogGroup = new LogGroup(this, "YarpTargetLogGroup", new LogGroupProps()
+                    {
+                        LogGroupName = "/ecs/yarp-target",
+                        Retention = RetentionDays.ONE_DAY,
+                    }),
+                    StreamPrefix = "yarp-target"
+                })
             });
         }
 
@@ -153,12 +163,21 @@ namespace AwsCdkStack
                 },
                 HealthCheck = new HealthCheck()
                 {
-                    Command = ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"],
+                    Command = ["CMD-SHELL", "curl -f http://localhost:80 || exit 1"],
                     Interval = Duration.Seconds(30),
                     Timeout = Duration.Seconds(5),
                     Retries = 3,
                     StartPeriod = Duration.Seconds(60)
-                }
+                },
+                Logging = LogDriver.AwsLogs(new AwsLogDriverProps()
+                {
+                    LogGroup = new LogGroup(this, "YarpProxyLogGroup", new LogGroupProps()
+                    {
+                        LogGroupName = "/ecs/yarp-proxy",
+                        Retention = RetentionDays.ONE_DAY,
+                    }),
+                    StreamPrefix = "yarp-proxy"
+                })
             });
         }
 
