@@ -13,7 +13,7 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/source", (IHttpContextAccessor contextAccessor) =>
     {
         contextAccessor.HttpContext!.Request.Headers.TryGetValue("X-Source", out var source);
-        return source.FirstOrDefault();
+        return source.FirstOrDefault() ?? "empty";
     })
     .WithName("Get source from header")
     .WithOpenApi();

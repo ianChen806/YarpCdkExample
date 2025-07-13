@@ -239,8 +239,17 @@
 - [x] 建立簡單的反向代理 ✅
 - [x] 建立後端測試服務 ✅
 - [x] 本機測試 YARP 反向代理功能 ✅
-- [ ] 學習 Docker 容器化 ← **下一步**
-- [ ] 推送映像到 ECR
+- [x] 修改 YARP 配置適應容器環境 ✅
+- [x] 學習 Docker 容器化 ✅
+- [x] 建立 YarpProxy Dockerfile ✅
+- [x] 建立 YarpTarget Dockerfile ✅
+- [x] 修正 Port 配置一致性 ✅
+- [x] 本機測試 Docker 容器 ✅
+  - [x] YarpTarget 容器建構和測試成功 ✅
+  - [x] YarpProxy 容器建構和測試 ✅
+  - [x] 容器間通訊測試成功 ✅
+  - [x] Docker Compose 整合測試成功 ✅
+- [ ] 推送映像到 ECR ← **下一步**
 
 #### 步驟 13: S3 整合
 - [ ] 學習 S3 基本操作

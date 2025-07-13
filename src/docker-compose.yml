@@ -1,0 +1,12 @@
+﻿version: '3.8'
+services:
+  yarp-proxy:
+    image: yarp-proxy:latest
+    ports:
+      - "8081:80"
+    environment:
+      - ReverseProxy__Clusters__cluster1__Destinations__destination1__Address=http://yarp-target:8080
+    depends_on:
+      - yarp-target
+  yarp-target:
+    image: yarp-target:latest
