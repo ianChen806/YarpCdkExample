@@ -80,7 +80,7 @@ namespace AwsCdkStack
 
         private FargateService CreateEcsService(SecurityGroup ecsSg, Cluster ecsCluster)
         {
-            var ecsService = new FargateService(this, "MyService", new FargateServiceProps()
+            var ecsService = new FargateService(this, "YarpService", new FargateServiceProps()
             {
                 VpcSubnets = new SubnetSelection()
                 {
@@ -96,7 +96,7 @@ namespace AwsCdkStack
 
         private TaskDefinition CreateTaskDef()
         {
-            var taskDefinition = new TaskDefinition(this, "MyTaskDefinition", new TaskDefinitionProps
+            var taskDefinition = new TaskDefinition(this, "YarpExample", new TaskDefinitionProps
             {
                 Cpu = "1024",
                 MemoryMiB = "2048",

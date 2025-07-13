@@ -1,6 +1,5 @@
 ﻿FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 RUN apt-get update && apt-get install -y curl
-USER $APP_UID
 WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:80
 EXPOSE 80

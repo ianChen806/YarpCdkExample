@@ -41,7 +41,7 @@ public class OriginHeaderTransformProvider : ITransformProvider
         });
     }
 
-    private static string? GetOrigin(RequestTransformContext r)
+    private string? GetOrigin(RequestTransformContext r)
     {
         r.HttpContext.Request.Headers.TryGetValue("Source", out var source);
         return source;
