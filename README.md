@@ -283,6 +283,332 @@
 - [ ] 驗證 ALB → ECS → YARP 完整鏈路
 - [ ] 測試反向代理功能
 
+#### 步驟 12B: CloudWatch Logs配置 🎯
+**學習目標**: 配置容器日誌收集，學習ECS logging機制
+
+### 🎯 學習重點  
+**為什麼需要Logs？**
+- 調試容器啟動問題的關鍵工具
+- 生產環境監控必備
+- 了解應用程式運行狀況
+
+**ECS Logging架構：**
+```
+Container → CloudWatch Logs → Log Groups → Log Streams
+```
+
+### 📚 技術知識
+**CloudWatch Logs基本概念：**
+1. **Log Group**: 日誌的邏輯容器 (例：/ecs/yarp-task)
+2. **Log Stream**: 同一來源的日誌序列 (例：yarp-proxy/task-id)  
+3. **Log Driver**: 負責收集和傳送日誌 (awslogs)
+
+**CDK配置要素：**
+1. 導入CloudWatch Logs namespace
+2. 建立Log Groups  
+3. 在容器定義中配置Logging
+4. 確保ExecutionRole有CloudWatch權限
+
+### 🎯 本步驟任務
+**階段一：了解現狀與規劃**
+
+請先回答以下思考題：
+1. 目前我們的容器為什麼看不到任何logs？
+2. 在ECS中，哪個角色負責將logs寫入CloudWatch？
+3. 我們需要為幾個容器配置logging？
+
+**完成思考後，我們將進行：**
+1. 檢查必要的CDK imports
+2. 建立CloudWatch Log Groups  
+3. 修改容器定義添加logging配置
+4. 驗證ExecutionRole權限
+
+### ⚠️ 學習注意事項
+- CloudWatch Logs會產生少量費用
+- Log retention期間可以配置
+- 過多的logs會影響成本
+
+**準備好開始了嗎？請先思考上述問題，然後告訴我你的理解！** 🤔
+
+### ✅ 思考題回答檢討
+1. **預設不log** ✓ - ECS需要明確配置LogDriver
+2. **ExecutionRole** ✓ - 負責容器啟動階段的CloudWatch寫入
+3. **2個容器** ✓ - yarp-proxy和yarp-target都需要logging配置
+
+### 🛠️ 階段二：CDK實作配置
+
+**任務1: 檢查並添加必要的imports**
+- 檢查是否已導入 `Amazon.CDK.AWS.Logs`
+- 了解 LogGroup 和 LogDriver 的概念
+
+**任務2: 建立CloudWatch Log Groups**
+- 為 YARP 服務建立專用的 Log Group
+- 配置適當的 retention period
+
+**任務3: 修改容器定義**
+- 在 `AddYarpProxy` 方法中添加 Logging 配置
+- 在 `AddYarpTarget` 方法中添加 Logging 配置
+- 使用 `awslogs` driver
+
+**任務4: 驗證ExecutionRole權限**
+- 確認 CloudWatch Logs 寫入權限
+
+### ⚠️ 決定延後 CloudWatch Logs 配置
+**用戶決定**: 由於成本考量，暫時跳過 logging 配置，優先解決部署問題
+**未來計畫**: 實際需要時再添加 logging 機制
+
+---
+
+## Step 12A-2: 修正Task Definition資源配置 🎯
+**學習目標**: 解決記憶體不足問題，成功部署雙容器架構
+
+### 🔍 問題診斷
+- **失敗症狀**: Exit Code 139 (SIGSEGV/Segmentation Fault)
+- **根本原因**: 256 CPU + 512MB 記憶體不足以支撐雙.NET應用程式
+- **解決方案**: 增加資源配置
+
+### 📚 Fargate資源配置知識
+**CPU 和記憶體組合限制:**
+- 256 CPU 單位 → 512MB - 2GB 記憶體  
+- 512 CPU 單位 → 1GB - 4GB 記憶體
+- 1024 CPU 單位 → 2GB - 8GB 記憶體
+
+**我們的選擇:** 512 CPU + 1024MB (1GB)
+- 符合 .NET 應用程式需求
+- 平衡效能與成本
+- 為雙容器預留充足資源
+
+### 🎯 任務：修改Task Definition
+請找到 `CreateTaskDef()` 方法並修改資源配置：
+
+**目前配置:**
+```csharp
+Cpu = 256,
+MemoryLimitMiB = 512,
+```
+
+**修改為:**
+```csharp
+Cpu = 512,
+MemoryLimitMiB = 1024,
+```
+
+完成後執行 `cdk deploy` 驗證部署是否成功！
+
+### ❌ 部署結果：還是記憶體不足！
+- **配置**: 512 CPU + 1024MB
+- **結果**: yarp-proxy Exit Code 139 (相同錯誤)
+- **診斷**: 雙.NET應用程式需要更多記憶體
+
+### 🎯 Step 12A-3: 第二次資源調整
+**現實**: 1024MB 對雙.NET容器還是不夠！
+
+**解決方案選項:**
+
+**選項A: 提高到推薦配置**
+```csharp
+Cpu = 1024,              // 1 vCPU
+MemoryLimitMiB = 2048,   // 2GB
+```
+- 每個容器約1GB記憶體
+- 符合.NET生產環境最佳實踐
+- 成本: 約每小時多$0.02
+
+**選項B: 中等配置**
+```csharp
+Cpu = 512,               // 0.5 vCPU  
+MemoryLimitMiB = 1536,   // 1.5GB
+```
+- 每個容器約750MB記憶體
+- 平衡成本與穩定性
+- 可能還是有風險
+
+### 💡 技術顧問建議
+選擇**選項A (1024 CPU + 2048MB)**：
+- 🎯 一次到位，避免重複調整
+- 📈 符合.NET應用程式標準配置  
+- 💰 成本增加有限，但穩定性大幅提升
+
+**你想選擇哪個選項？**
+
+### ❌ 第三次失敗：1024 CPU + 2048MB 還是 Exit Code 139！
+
+**重新診斷：可能不是記憶體問題！**
+
+Exit Code 139 (SIGSEGV) 的其他可能原因：
+
+### 🔍 可能的根本問題
+
+**1. 容器映像問題**
+- Debug模式建置 (應該用Release)
+- 缺少必要的.NET Runtime
+- Windows/Linux平台不匹配
+- 映像損壞
+
+**2. 程式碼問題**  
+- 應用程式啟動就crash
+- 不正確的依賴注入配置
+- 空指標引用 (Null Reference)
+- 執行緒問題
+
+**3. 環境配置問題**
+- 環境變數設置錯誤
+- Port綁定問題 (應用程式無法綁定到port 80)
+- 網路配置衝突
+
+**4. Fargate特定問題**
+- Platform架構不匹配 (x86 vs ARM)
+- 容器運行時版本問題
+- 權限不足
+
+### 🎯 下一步診斷計畫
+
+**階段1: 本地容器測試** 
+驗證映像本身是否正常：
+```bash
+docker run -p 80:80 yarp-proxy:latest
+```
+
+**階段2: 檢查程式碼**
+確認應用程式可以正常啟動和綁定port 80
+
+**階段3: CloudWatch Logs**  
+是時候啟用logging了，這是唯一能看到真正錯誤的方法
+
+**階段4: 簡化測試**
+先用單一nginx容器測試ECS部署
+
+### 🤔 建議立即行動
+1. **本地測試容器** (排除映像問題)
+2. **啟用CloudWatch Logs** (看到真實錯誤訊息)
+3. **簡化為單容器** (隔離問題)
+
+**你想從哪個診斷步驟開始？**
+
+### ✅ 架構問題確認！找到根本原因！
+
+**診斷結果:**
+- **映像架構**: `amd64` (x86_64) 
+- **Task Definition**: 沒有指定CPU架構
+- **Fargate預設**: 可能使用ARM架構
+- **結果**: 架構不匹配導致Exit Code 139
+
+### 🔧 解決方案：指定Runtime Platform
+
+在 `CreateTaskDef()` 方法中添加 `RuntimePlatform` 配置：
+
+**修改前:**
+```csharp
+var taskDefinition = new TaskDefinition(this, "MyTaskDefinition", new TaskDefinitionProps
+{
+    Cpu = "1024",
+    MemoryMiB = "2048",
+    Compatibility = Compatibility.FARGATE,
+    TaskRole = CreateTaskRole(),
+    ExecutionRole = CreateExecutionRole()
+});
+```
+
+**修改後:**
+```csharp  
+var taskDefinition = new TaskDefinition(this, "MyTaskDefinition", new TaskDefinitionProps
+{
+    Cpu = "1024",
+    MemoryMiB = "2048",
+    Compatibility = Compatibility.FARGATE,
+    RuntimePlatform = new RuntimePlatform  // ✅ 正確的架構配置方法
+    {
+        CpuArchitecture = CpuArchitecture.X86_64,
+        OperatingSystemFamily = OperatingSystemFamily.LINUX
+    },
+    TaskRole = CreateTaskRole(),
+    ExecutionRole = CreateExecutionRole()
+});
+```
+
+### 🎯 下一步
+修改CDK代碼後執行 `cdk deploy` 驗證修正結果！
+
+---
+
+## Step 12A-3: 架構拆分計畫 💡
+**學習目標**: 將基礎設施與運算資源分離，實現成本控制與開發靈活性
+
+### 🏗️ 拆分架構設計 (已修正)
+**智慧決策**: 分離無成本基礎資源與有成本運算資源
+
+⚠️ **重要修正**: ALB確實有固定成本(約$16/月)，應重新分類
+
+### 選項1: 最大成本控制 (推薦)
+
+**InfrastructureStack (純基礎設施)**:
+- VPC + Subnets
+- Security Groups
+- **特點**: 真正的零成本基礎設施
+
+**ApplicationStack (所有運算資源)**:
+- Application Load Balancer + Target Groups
+- ECS Cluster + Service + Task Definition  
+- **特點**: 包含所有成本，可完全刪除
+
+### 選項2: 平衡穩定性與成本
+
+**NetworkStack (網路層)**:
+- VPC + Subnets + Security Groups
+- Application Load Balancer + Target Groups
+- **特點**: 網路入口點穩定，DNS不變
+
+**ApplicationStack (運算層)**:
+- ECS Cluster + Service + Task Definition
+- **特點**: 主要運算成本，可獨立部署
+
+### ✅ 已選定：選項1 - 最大成本控制
+
+**最終架構設計:**
+
+**InfrastructureStack (純基礎設施)**:
+- VPC + Subnets
+- Security Groups
+- **成本**: $0 (真正零成本)
+- **用途**: 長期保留的網路基礎
+
+**ApplicationStack (完整應用)**:
+- Application Load Balancer + Target Groups
+- ECS Cluster + Service + Task Definition
+- **成本**: 所有費用來源
+- **用途**: 實驗時可完全刪除，節省100%成本
+
+### 💡 選擇優勢
+- 🎯 **零成本保留**: InfrastructureStack真正免費
+- 💰 **完全控制**: 一鍵刪除所有費用
+- 🔄 **重建簡單**: DNS變更可接受，成本節省更重要
+
+### 💰 成本控制優勢
+- 🎯 **精準控制**: 只需刪除ApplicationStack即可停止主要費用
+- 🔄 **開發靈活**: 保留基礎設施，隨時可重新部署應用
+- 📈 **擴展性**: 多個應用可共享同一基礎設施
+- 🛡️ **風險隔離**: 實驗不會影響基礎網路架構
+
+### 🎯 實作計畫
+**執行時機**: 當前部署成功並驗證功能正常後
+
+1. **建立 InfrastructureStack.cs**
+2. **建立 ApplicationStack.cs**  
+3. **配置 Cross-Stack References**
+4. **更新 Program.cs 部署邏輯**
+5. **獨立部署命令測試**
+
+**部署命令將變為:**
+```bash
+cdk deploy InfrastructureStack    # 部署基礎設施
+cdk deploy ApplicationStack       # 部署應用程式
+```
+
+### ⏳ 下一步
+等待當前部署完成 → 驗證YARP功能 → 執行架構拆分
+
+---
+
 #### 步驟 13: S3 整合
 - [ ] 學習 S3 基本操作
 - [ ] 建立 S3 Bucket

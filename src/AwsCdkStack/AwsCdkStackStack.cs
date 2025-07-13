@@ -97,11 +97,16 @@ namespace AwsCdkStack
         {
             var taskDefinition = new TaskDefinition(this, "MyTaskDefinition", new TaskDefinitionProps
             {
-                Cpu = "256",
-                MemoryMiB = "512",
+                Cpu = "1024",
+                MemoryMiB = "2048",
                 Compatibility = Compatibility.FARGATE,
                 TaskRole = CreateTaskRole(),
-                ExecutionRole = CreateExecutionRole()
+                ExecutionRole = CreateExecutionRole(),
+                RuntimePlatform = new RuntimePlatform()
+                {
+                    CpuArchitecture = CpuArchitecture.X86_64,
+                    OperatingSystemFamily = OperatingSystemFamily.LINUX
+                }
             });
 
             var proxyImage = Node.TryGetContext("yarp-proxy-image") as string;
