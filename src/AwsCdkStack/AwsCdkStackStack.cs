@@ -34,7 +34,7 @@ namespace AwsCdkStack
             var targetGroup = new ApplicationTargetGroup(this, "MyTargetGroup", new ApplicationTargetGroupProps()
             {
                 Vpc = vpc,
-                Port = 8080,
+                Port = 80,
                 Protocol = ApplicationProtocol.HTTP,
                 HealthCheck = new Amazon.CDK.AWS.ElasticLoadBalancingV2.HealthCheck()
                 {
@@ -103,9 +103,42 @@ namespace AwsCdkStack
                 TaskRole = CreateTaskRole(),
                 ExecutionRole = CreateExecutionRole()
             });
-            taskDefinition.AddContainer("nginx", new ContainerDefinitionOptions()
+
+            var proxyImage = Node.TryGetContext("yarp-proxy-image") as string;
+            var targetImage = Node.TryGetContext("yarp-target-image") as string;
+            AddYarpProxy(taskDefinition, proxyImage);
+            AddYarpTarget(taskDefinition, targetImage);
+            return taskDefinition;
+        }
+
+        private void AddYarpTarget(TaskDefinition taskDefinition, string targetImage)
+        {
+            taskDefinition.AddContainer("yarp-target", new ContainerDefinitionOptions()
             {
-                Image = new RepositoryImage("nginx:latest"),
+                Image = new RepositoryImage(targetImage!),
+                PortMappings = new PortMapping[]
+                {
+                    new PortMapping
+                    {
+                        ContainerPort = 8080,
+                    }
+                },
+                HealthCheck = new HealthCheck()
+                {
+                    Command = ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"],
+                    Interval = Duration.Seconds(30),
+                    Timeout = Duration.Seconds(5),
+                    Retries = 3,
+                    StartPeriod = Duration.Seconds(60)
+                }
+            });
+        }
+
+        private void AddYarpProxy(TaskDefinition taskDefinition, string proxyImage)
+        {
+            taskDefinition.AddContainer("yarp-proxy", new ContainerDefinitionOptions()
+            {
+                Image = new RepositoryImage(proxyImage!),
                 PortMappings = new PortMapping[]
                 {
                     new PortMapping
@@ -115,14 +148,13 @@ namespace AwsCdkStack
                 },
                 HealthCheck = new HealthCheck()
                 {
-                    Command = ["CMD-SHELL", "nginx -t || exit 1"],
+                    Command = ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"],
                     Interval = Duration.Seconds(30),
                     Timeout = Duration.Seconds(5),
                     Retries = 3,
                     StartPeriod = Duration.Seconds(60)
                 }
             });
-            return taskDefinition;
         }
 
         private Role CreateExecutionRole()

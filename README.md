@@ -274,10 +274,11 @@
 - 🎯 準備進入 ECS 部署階段
 
 #### 步驟 12A: ECS 部署更新（優先處理）
-- [ ] 更新 CDK Task Definition 使用 ECR 映像 ← **當前任務**
-- [ ] 修改容器定義支援 YARP 雙容器架構
-- [ ] 配置容器間通訊 (localhost)
-- [ ] 更新 Port 和健康檢查設定
+- [x] 更新 CDK Task Definition 使用 ECR 映像 ✅
+- [x] 修改容器定義支援 YARP 雙容器架構 ✅
+- [x] 配置容器間通訊 (localhost) ✅
+- [x] 更新 Port 和健康檢查設定 ✅
+- [ ] 配置 CDK Context 映像 URI ← **當前任務**
 - [ ] 部署新的 Task Definition 到 ECS
 - [ ] 驗證 ALB → ECS → YARP 完整鏈路
 - [ ] 測試反向代理功能
