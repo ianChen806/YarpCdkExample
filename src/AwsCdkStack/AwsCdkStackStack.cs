@@ -138,7 +138,7 @@ namespace AwsCdkStack
         {
             taskDefinition.AddContainer("yarp-proxy", new ContainerDefinitionOptions()
             {
-                Image = new RepositoryImage(proxyImage!),
+                Image = new RepositoryImage(proxyImage),
                 PortMappings = new PortMapping[]
                 {
                     new PortMapping
@@ -168,6 +168,18 @@ namespace AwsCdkStack
                         "service-role/AmazonECSTaskExecutionRolePolicy")
                 ]
             });
+            executionRole.AddToPolicy(new PolicyStatement(new PolicyStatementProps()
+            {
+                Effect = Effect.ALLOW,
+                Actions =
+                [
+                    "ecr:GetAuthorizationToken",
+                    "ecr:BatchCheckLayerAvailability",
+                    "ecr:GetDownloadUrlForLayer",
+                    "ecr:BatchGetImage"
+                ],
+                Resources = ["*"]
+            }));
             return executionRole;
         }
 

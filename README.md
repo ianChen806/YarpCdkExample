@@ -278,8 +278,8 @@
 - [x] 修改容器定義支援 YARP 雙容器架構 ✅
 - [x] 配置容器間通訊 (localhost) ✅
 - [x] 更新 Port 和健康檢查設定 ✅
-- [ ] 配置 CDK Context 映像 URI ← **當前任務**
-- [ ] 部署新的 Task Definition 到 ECS
+- [x] 配置 CDK Context 映像 URI ✅
+- [ ] 部署新的 Task Definition 到 ECS ← **當前任務**
 - [ ] 驗證 ALB → ECS → YARP 完整鏈路
 - [ ] 測試反向代理功能
 
