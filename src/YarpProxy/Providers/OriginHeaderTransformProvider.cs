@@ -1,5 +1,6 @@
 using Yarp.ReverseProxy.Transforms;
 using Yarp.ReverseProxy.Transforms.Builder;
+using YarpProxy.Domain.Models;
 using YarpProxy.Interfaces;
 
 namespace YarpProxy.Providers;
@@ -7,7 +8,7 @@ namespace YarpProxy.Providers;
 public class OriginHeaderTransformProvider : ITransformProvider
 {
     private readonly IDomainHeaderService _svc;
-    private Dictionary<string, string> _map = new();
+    private Dictionary<string, DomainSetting> _map = new();
 
     public OriginHeaderTransformProvider(IDomainHeaderService svc)
     {
@@ -30,7 +31,7 @@ public class OriginHeaderTransformProvider : ITransformProvider
             var origin = GetOrigin(r);
             if (origin != null && _map.TryGetValue(origin, out var header))
             {
-                r.ProxyRequest.Headers.Add("X-Source", header);
+                r.ProxyRequest.Headers.Add("X-Source", header.Code);
             }
             else
             {
