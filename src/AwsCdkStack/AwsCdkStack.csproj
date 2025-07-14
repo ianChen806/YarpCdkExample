@@ -17,4 +17,10 @@
         -->
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="assets\domain-config.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
