@@ -11,10 +11,10 @@ namespace YarpProxy.Services;
 
 public class DomainHeaderService : IDomainHeaderService
 {
+    private readonly S3Config _config;
+    private readonly ILogger<DomainHeaderService> _logger;
     private readonly IMemoryCache _memoryCache;
     private readonly IAmazonS3 _s3Client;
-    private readonly ILogger<DomainHeaderService> _logger;
-    private readonly S3Config _config;
 
     public DomainHeaderService(
         IOptions<S3Config> config,
@@ -47,7 +47,7 @@ public class DomainHeaderService : IDomainHeaderService
     {
         try
         {
-            using var response = await _s3Client.GetObjectAsync(new GetObjectRequest()
+            using var response = await _s3Client.GetObjectAsync(new GetObjectRequest
             {
                 BucketName = _config.BucketName,
                 Key = _config.ConfigFileName
