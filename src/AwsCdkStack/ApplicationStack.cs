@@ -73,7 +73,8 @@ public class ApplicationStack : Stack
                 LogGroup = new LogGroup(this, "YarpProxyLogGroup", new LogGroupProps
                 {
                     LogGroupName = "/ecs/yarp-proxy",
-                    Retention = RetentionDays.ONE_DAY
+                    Retention = RetentionDays.ONE_DAY,
+                    RemovalPolicy = RemovalPolicy.DESTROY
                 }),
                 StreamPrefix = "yarp-proxy"
             })
@@ -105,7 +106,8 @@ public class ApplicationStack : Stack
                 LogGroup = new LogGroup(this, "YarpTargetLogGroup", new LogGroupProps
                 {
                     LogGroupName = "/ecs/yarp-target",
-                    Retention = RetentionDays.ONE_DAY
+                    Retention = RetentionDays.ONE_DAY,
+                    RemovalPolicy = RemovalPolicy.DESTROY
                 }),
                 StreamPrefix = "yarp-target"
             })
