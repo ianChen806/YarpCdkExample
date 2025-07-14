@@ -1,4 +1,3 @@
-using System.Linq;
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
 using Constructs;
@@ -7,64 +6,19 @@ namespace AwsCdkStack
 {
     public class InfrastructureStack : Stack
     {
+        public Vpc Vpc { get; set; }
+
         internal InfrastructureStack(Construct scope, string id, IStackProps props = null)
             : base(scope, id, props)
         {
             var vpc = CreateVpc();
+
             CreateS3Endpoint(vpc);
 
             // 改由AppStack建立
             // CreateVpcEndpoints(vpc);
 
-            CfnOutputs(vpc);
-        }
-
-        private void CreateVpcEndpoints(Vpc vpc)
-        {
-            vpc.AddInterfaceEndpoint("EcrApiEndpoint", new InterfaceVpcEndpointOptions
-            {
-                Service = InterfaceVpcEndpointAwsService.ECR
-            });
-
-            vpc.AddInterfaceEndpoint("EcrDockerEndpoint", new InterfaceVpcEndpointOptions
-            {
-                Service = InterfaceVpcEndpointAwsService.ECR_DOCKER
-            });
-
-            vpc.AddInterfaceEndpoint("CloudWatchLogsEndpoint", new InterfaceVpcEndpointOptions
-            {
-                Service = InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS
-            });
-        }
-
-        private void CfnOutputs(Vpc vpc)
-        {
-            new CfnOutput(this, "VpcId", new CfnOutputProps
-            {
-                Value = vpc.VpcId,
-                ExportName = "InfrastructureStack-VpcId"
-            });
-            new CfnOutput(this, "PublicSubnets", new CfnOutputProps
-            {
-                Value = string.Join(",", vpc.PublicSubnets.Select(r => r.SubnetId)),
-                ExportName = "InfrastructureStack-PublicSubnets"
-            });
-            new CfnOutput(this, "AppSubnets", new CfnOutputProps
-            {
-                Value = string.Join(",", vpc.SelectSubnets(new SubnetSelection
-                {
-                    SubnetGroupName = "App"
-                }).Subnets.Select(s => s.SubnetId)),
-                ExportName = "InfrastructureStack-AppSubnets"
-            });
-            new CfnOutput(this, "DatabaseSubnets", new CfnOutputProps
-            {
-                Value = string.Join(",", vpc.SelectSubnets(new SubnetSelection
-                {
-                    SubnetGroupName = "Database"
-                }).Subnets.Select(s => s.SubnetId)),
-                ExportName = "InfrastructureStack-DatabaseSubnets"
-            });
+            Vpc = vpc;
         }
 
         private Vpc CreateVpc()

@@ -9,13 +9,17 @@ using HealthCheck = Amazon.CDK.AWS.ECS.HealthCheck;
 
 namespace AwsCdkStack
 {
-    public class AwsCdkStackStack : Stack
+    public class ApplicationStack : Stack
     {
-        internal AwsCdkStackStack(Construct scope, string id, IStackProps props = null)
+        internal ApplicationStack(
+            Construct scope,
+            string id,
+            InfrastructureStack infrastructureStack,
+            IStackProps props = null)
             : base(scope, id, props)
         {
-            var vpc = CreateVpc();
-            CreateS3GatewayEndpoint(vpc);
+            var vpc = infrastructureStack.Vpc;
+            CreateVpcEndpoints(vpc);
 
             var albSg = CreateAlbSg(vpc);
             var ecsSg = CreateEcsSg(vpc, albSg);
@@ -30,7 +34,25 @@ namespace AwsCdkStack
             AddAlbListener(alb, targetGroup);
         }
 
-        private ApplicationTargetGroup CreateTargetGroup(Vpc vpc)
+        private void CreateVpcEndpoints(IVpc vpc)
+        {
+            vpc.AddInterfaceEndpoint("EcrApiEndpoint", new InterfaceVpcEndpointOptions
+            {
+                Service = InterfaceVpcEndpointAwsService.ECR
+            });
+
+            vpc.AddInterfaceEndpoint("EcrDockerEndpoint", new InterfaceVpcEndpointOptions
+            {
+                Service = InterfaceVpcEndpointAwsService.ECR_DOCKER
+            });
+
+            vpc.AddInterfaceEndpoint("CloudWatchLogsEndpoint", new InterfaceVpcEndpointOptions
+            {
+                Service = InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS
+            });
+        }
+
+        private ApplicationTargetGroup CreateTargetGroup(IVpc vpc)
         {
             var targetGroup = new ApplicationTargetGroup(this, "MyTargetGroup", new ApplicationTargetGroupProps()
             {
@@ -54,7 +76,7 @@ namespace AwsCdkStack
             });
         }
 
-        private ApplicationLoadBalancer CreateAlb(Vpc vpc, SecurityGroup albSg)
+        private ApplicationLoadBalancer CreateAlb(IVpc vpc, SecurityGroup albSg)
         {
             var alb = new ApplicationLoadBalancer(this, "MyLoadBalance", new ApplicationLoadBalancerProps()
             {
@@ -69,7 +91,7 @@ namespace AwsCdkStack
             return alb;
         }
 
-        private Cluster CreateEcsCluster(Vpc vpc)
+        private Cluster CreateEcsCluster(IVpc vpc)
         {
             var ecsCluster = new Cluster(this, "MyCluster", new ClusterProps
             {
@@ -224,18 +246,7 @@ namespace AwsCdkStack
             return taskRole;
         }
 
-        private Vpc CreateVpc()
-        {
-            var vpc = new Vpc(this, "MyVpc", new VpcProps
-            {
-                MaxAzs = 2,
-                IpAddresses = IpAddresses.Cidr("10.16.0.0/16"),
-                SubnetConfiguration = SubnetConfigurations()
-            });
-            return vpc;
-        }
-
-        private SecurityGroup CreateEcsSg(Vpc vpc, SecurityGroup albSg)
+        private SecurityGroup CreateEcsSg(IVpc vpc, SecurityGroup albSg)
         {
             var ecsSg = new SecurityGroup(this, "ECS-SG", new SecurityGroupProps()
             {
@@ -251,7 +262,7 @@ namespace AwsCdkStack
             return ecsSg;
         }
 
-        private SecurityGroup CreateAlbSg(Vpc vpc)
+        private SecurityGroup CreateAlbSg(IVpc vpc)
         {
             var albSg = new SecurityGroup(this, "ALB-SG", new SecurityGroupProps()
             {
@@ -268,46 +279,6 @@ namespace AwsCdkStack
                 Port.HTTPS,
                 "allow https from anywhere");
             return albSg;
-        }
-
-        private static ISubnetConfiguration[] SubnetConfigurations()
-        {
-            var subnetConfigurations = new ISubnetConfiguration[]
-            {
-                new SubnetConfiguration
-                {
-                    Name = "Public",
-                    SubnetType = SubnetType.PUBLIC,
-                    CidrMask = 20,
-                },
-                new SubnetConfiguration
-                {
-                    Name = "App",
-                    SubnetType = SubnetType.PRIVATE_WITH_EGRESS,
-                    CidrMask = 20,
-                },
-                new SubnetConfiguration
-                {
-                    Name = "Database",
-                    SubnetType = SubnetType.PRIVATE_ISOLATED,
-                    CidrMask = 20
-                }
-            };
-            return subnetConfigurations;
-        }
-
-        private void CreateS3GatewayEndpoint(Vpc vpc)
-        {
-            var s3Endpoint = new GatewayVpcEndpoint(this, "S3Endpoint", new GatewayVpcEndpointProps
-            {
-                Vpc = vpc,
-                Service = GatewayVpcEndpointAwsService.S3,
-                Subnets =
-                [
-                    new SubnetSelection() { SubnetGroupName = "App" },
-                    new SubnetSelection() { SubnetGroupName = "Database" },
-                ]
-            });
         }
     }
 }
