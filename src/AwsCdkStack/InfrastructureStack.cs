@@ -1,6 +1,7 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.S3;
+using Amazon.CDK.AWS.S3.Deployment;
 using Constructs;
 
 namespace AwsCdkStack;
@@ -63,6 +64,14 @@ public class InfrastructureStack : Stack
             Versioned = false,
             PublicReadAccess = false,
             BlockPublicAccess = BlockPublicAccess.BLOCK_ALL
+        });
+
+        new BucketDeployment(this, "ConfigFileDeployment", new BucketDeploymentProps()
+        {
+            Sources = [Source.Asset("assets")],
+            DestinationBucket = bucket,
+            Prune = true,
+            RetainOnDelete = false
         });
         return bucket;
     }
